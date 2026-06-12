@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Contenidos - Vue & Tailwind</title>
+    
+    <!-- Vue 2.0 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#990000', // Rojo Universidad del Tolima
+                            dark: '#1a1a1a',
+                            light: '#f4f4f5'
+                        },
+                        grammar: {
+                            sujeto: '#166534', // Verde oscuro para Sujeto
+                            sujetoBg: '#dcfce7', // Verde claro
+                            verbo: '#991b1b', // Rojo para Verbo
+                            verboBg: '#fee2e2', // Rojo claro
+                            predicado: '#1e3a8a', // Azul para Predicado
+                            predicadoBg: '#dbeafe', // Azul claro
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Transiciones suaves para la interactividad de Vue */
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 0.3s;
+        }
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <div id="app" class="min-h-screen flex flex-col">
+        
+        <!-- HEADER & NAVEGACIÓN (Escalable) -->
+        <header class="bg-white shadow-md sticky top-0 z-50">
+            <!-- Barra superior decorativa -->
+            <div class="h-2 bg-brand-red w-full"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Menú de Navegación Alineado a la Izquierda -->
+                    <nav class="flex space-x-4">
+                        <button 
+                            v-for="doc in documents" 
+                            :key="doc.id"
+                            @click="activeDocument = doc.id"
+                            :class="[
+                                'px-4 py-2 rounded-md text-sm font-bold flex items-center gap-2 transition-all duration-200',
+                                activeDocument === doc.id 
+                                    ? 'bg-brand-red text-white shadow-md transform scale-105' 
+                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
+                            ]"
+                        >
+                            <span class="material-icons text-lg">{{ doc.icon }}</span>
+                            {{ doc.title }}
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- ÁREA PRINCIPAL DE CONTENIDO DINÁMICO -->
+        <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+            
+            <!-- CONTENIDO DEL DOCUMENTO 1: LA ORACIÓN SIMPLE -->
+            <transition name="fade" mode="out-in">
+                <div v-show="activeDocument === 'doc1'" key="doc1" class="space-y-12">
+                    
+                    <!-- Encabezado del Documento -->
+                    <div class="text-center space-y-4">
+                        <div class="inline-block bg-brand-red text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-sm mb-4">
+                            Universidad del Tolima
+                        </div>
+                        <h1 class="text-4xl md:text-5xl font-extrabold text-brand-dark tracking-tight">
+                            LA ORACIÓN SIMPLE
+                        </h1>
+                        <p class="text-xl text-gray-600 font-medium italic">
+                            ¡Construimos la universidad que soñamos!
+                        </p>
+                    </div>
+
+                    <!-- Introducción y Características -->
+                    <section class="bg-white rounded-2xl shadow-lg p-8 border-t-4 border-brand-red">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="material-icons text-brand-red text-3xl">lightbulb</span>
+                            <h2 class="text-2xl font-bold text-gray-800">Características: La base de toda comunicación</h2>
+                        </div>
+                        
+                        <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                            La oración simple es aquella que tiene un solo verbo conjugado y expresa una idea completa. 
+                            Posee una estructura básica: <strong class="text-brand-red text-xl bg-red-50 px-2 py-1 rounded">SUJETO + PREDICADO</strong>.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="flex items-start gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <span class="material-icons text-green-600 mt-1">check_circle</span>
+                                <p>Expresa una sola idea completa.</p>
+                            </div>
+                            <div class="flex items-start gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <span class="material-icons text-green-600 mt-1">check_circle</span>
+                                <p>Tiene un solo verbo conjugado.</p>
+                            </div>
+                            <div class="flex items-start gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <span class="material-icons text-green-600 mt-1">check_circle</span>
+                                <p>Puede ser oral o escrita.</p>
+                            </div>
+                            <div class="flex items-start gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <span class="material-icons text-green-600 mt-1">check_circle</span>
+                                <p>Se compone de sujeto y predicado.</p>
+                            </div>
+                            <div class="flex items-start gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200 lg:col-span-2">
+                                <span class="material-icons text-green-600 mt-1">check_circle</span>
+                                <p>No depende de otra oración para tener sentido.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Ejemplo Global Visual -->
+                    <section class="bg-gray-100 rounded-2xl shadow-inner p-8 text-center">
+                        <h2 class="text-xl font-bold text-gray-500 uppercase tracking-widest mb-8">Ejemplo Global</h2>
+                        
+                        <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8">
+                            <!-- Sujeto -->
+                            <div class="flex flex-col items-center">
+                                <div class="bg-grammar-sujetoBg text-grammar-sujeto border-2 border-grammar-sujeto font-bold text-2xl px-6 py-4 rounded-xl shadow-md">
+                                    Los estudiantes
+                                </div>
+                                <span class="material-icons text-grammar-sujeto my-2">arrow_downward</span>
+                                <span class="font-bold text-grammar-sujeto">Sujeto</span>
+                            </div>
+
+                            <!-- Verbo -->
+                            <div class="flex flex-col items-center">
+                                <div class="bg-grammar-verboBg text-grammar-verbo border-2 border-grammar-verbo font-bold text-2xl px-6 py-4 rounded-xl shadow-md">
+                                    leen
+                                </div>
+                                <span class="material-icons text-grammar-verbo my-2">arrow_downward</span>
+                                <span class="font-bold text-grammar-verbo text-center">Verbo<br><span class="text-sm font-normal">(núcleo del predicado)</span></span>
+                            </div>
+
+                            <!-- Predicado -->
+                            <div class="flex flex-col items-center">
+                                <div class="bg-grammar-predicadoBg text-grammar-predicado border-2 border-grammar-predicado font-bold text-2xl px-6 py-4 rounded-xl shadow-md">
+                                    un libro interesante.
+                                </div>
+                                <span class="material-icons text-grammar-predicado my-2">arrow_downward</span>
+                                <span class="font-bold text-grammar-predicado">Predicado</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 1. Estructura Básica -->
+                    <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-2xl shadow-lg border-l-8 border-grammar-sujeto">
+                            <h3 class="text-xl font-bold text-grammar-sujeto mb-4 flex items-center gap-2">
+                                <span class="material-icons">person</span> 1. EL SUJETO
+                            </h3>
+                            <p class="text-gray-700">
+                                Es la parte de la oración que indica quién realiza la acción o de quién se habla.
+                            </p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg border-l-8 border-grammar-predicado">
+                            <h3 class="text-xl font-bold text-grammar-predicado mb-4 flex items-center gap-2">
+                                <span class="material-icons">bolt</span> 1. EL PREDICADO
+                            </h3>
+                            <p class="text-gray-700">
+                                Es la parte de la oración que contiene la acción o información que se dice del sujeto. Es la parte de la oración que contiene la acción que realiza el sujeto o lo que se dice de él.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- 2. El Sujeto y 3. El Predicado (Detalles) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        
+                        <!-- Columna Sujeto -->
+                        <section class="space-y-6">
+                            <h2 class="text-3xl font-extrabold text-gray-800 border-b-2 border-gray-200 pb-2">2. El Sujeto</h2>
+                            
+                            <div class="bg-white p-6 rounded-xl shadow">
+                                <h3 class="text-lg font-bold text-brand-red mb-4">2.1. Tipos de Sujeto</h3>
+                                <ul class="space-y-4">
+                                    <li class="bg-gray-50 p-4 rounded-lg">
+                                        <span class="font-bold text-gray-800">a) Sujeto expreso:</span> Aparece explícitamente en la oración.
+                                        <div class="mt-2 text-gray-600 italic border-l-4 border-grammar-sujeto pl-3">Ejemplo: María estudia inglés.</div>
+                                    </li>
+                                    <li class="bg-gray-50 p-4 rounded-lg">
+                                        <span class="font-bold text-gray-800">b) Sujeto tácito (elíptico):</span> No aparece, pero se entiende por la forma del verbo.
+                                        <div class="mt-2 text-gray-600 italic border-l-4 border-grammar-sujeto pl-3">Ejemplo: Estudiamos todos los días. <br><span class="text-sm">(Yo estudiamos todos los dias - *Nota: transcripción literal del texto*).</span></div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-white p-6 rounded-xl shadow">
+                                <h3 class="text-lg font-bold text-brand-red mb-4">2.2. Núcleo del Sujeto</h3>
+                                <p class="text-gray-700 mb-4">Es la palabra más importante del sujeto. Puede ser sustantivo, pronombre o cualquier palabra sustantivada.</p>
+                                <ul class="space-y-2 text-gray-700">
+                                    <li class="flex items-center gap-2"><span class="material-icons text-sm text-gray-400">chevron_right</span> Los <strong>niños</strong> juegan en el parque. &rarr; <span class="text-sm bg-gray-200 px-2 rounded">Núcleo: niños</span></li>
+                                    <li class="flex items-center gap-2"><span class="material-icons text-sm text-gray-400">chevron_right</span> <strong>Ella</strong> canta muy bien. &rarr; <span class="text-sm bg-gray-200 px-2 rounded">Núcleo: Ella</span></li>
+                                    <li class="flex items-center gap-2"><span class="material-icons text-sm text-gray-400">chevron_right</span> <strong>Estudiar</strong> es importante. &rarr; <span class="text-sm bg-gray-200 px-2 rounded">Núcleo: Estudiar</span></li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <!-- Columna Predicado -->
+                        <section class="space-y-6">
+                            <h2 class="text-3xl font-extrabold text-gray-800 border-b-2 border-gray-200 pb-2">3. El Predicado</h2>
+                            
+                            <div class="bg-white p-6 rounded-xl shadow">
+                                <h3 class="text-lg font-bold text-brand-red mb-4">3.1. Núcleo del Predicado</h3>
+                                <p class="text-gray-700 mb-4">Es el verbo principal que aporta el significado central del predicado.</p>
+                                <div class="bg-gray-50 p-4 rounded-lg italic text-gray-600 border-l-4 border-grammar-predicado pl-3">
+                                    Ejemplo: Los estudiantes <strong>leen</strong> un libro interesante.<br>
+                                    <span class="bg-gray-200 px-2 py-1 rounded not-italic text-sm mt-2 inline-block text-gray-800">Núcleo: leen</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-6 rounded-xl shadow">
+                                <h3 class="text-lg font-bold text-brand-red mb-4">3.2. Tipos de Predicado</h3>
+                                <ul class="space-y-4">
+                                    <li class="bg-gray-50 p-4 rounded-lg">
+                                        <span class="font-bold text-gray-800">Verbal:</span> tiene verbo que expresa acción.
+                                        <div class="mt-2 text-gray-600 italic border-l-4 border-grammar-predicado pl-3">Ej: El perro corre en el jardin.</div>
+                                    </li>
+                                    <li class="bg-gray-50 p-4 rounded-lg">
+                                        <span class="font-bold text-gray-800">Nominal:</span> el verbo SER o ESTAR une el sujeto con un atributo.
+                                        <div class="mt-2 text-gray-600 italic border-l-4 border-grammar-predicado pl-3">Ej.: Mi hermana es responsable.</div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-sm">
+                                <h4 class="font-bold text-amber-800 flex items-center gap-2">
+                                    <span class="material-icons">warning</span> ¡IMPORTANTE!
+                                </h4>
+                                <p class="text-amber-900 mt-2 text-sm">
+                                    El predicado puede estar formado solo por el verbo o por el verbo más complementos que aportan información sobre la acción.
+                                </p>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- 4. Complementos del predicado -->
+                    <section class="bg-brand-dark text-white rounded-2xl shadow-xl p-8">
+                        <h2 class="text-3xl font-extrabold mb-4">4. Complementos del Predicado</h2>
+                        <p class="text-gray-300 mb-8">Son palabras o grupos de palabras que brindan información adicional sobre la acción del verbo.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-gray-800 p-6 rounded-xl">
+                                <h3 class="text-xl font-bold text-brand-red bg-white inline-block px-3 py-1 rounded mb-4">4.1. CD</h3>
+                                <p class="font-semibold text-gray-300 mb-2">Complemento Directo</p>
+                                <p class="text-sm text-gray-400 mb-4">Responde a las preguntas: <br>¿qué? o ¿a quién?.</p>
+                                <div class="bg-gray-900 p-3 rounded text-sm italic">
+                                    Mariana compró un libro.<br>
+                                    <span class="text-brand-red font-bold block mt-2">¿Qué compró? &rarr; CD</span>
+                                    <span class="text-xs text-gray-500 block mt-1">("un libro" recibe directamente la acción del verbo "compró").</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-800 p-6 rounded-xl">
+                                <h3 class="text-xl font-bold text-brand-red bg-white inline-block px-3 py-1 rounded mb-4">4.2. CI</h3>
+                                <p class="font-semibold text-gray-300 mb-2">Complemento Indirecto</p>
+                                <p class="text-sm text-gray-400 mb-4">Responde a las preguntas: <br>¿a quién? o ¿para quién?.</p>
+                                <div class="bg-gray-900 p-3 rounded text-sm italic">
+                                    Ana dio un regalo a su amiga.<br>
+                                    <span class="text-brand-red font-bold block mt-2">¿A quién? &rarr; CI</span>
+                                    <span class="text-xs text-gray-500 block mt-1">("a su amiga" es a quien se le da el regalo).</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-800 p-6 rounded-xl">
+                                <h3 class="text-xl font-bold text-brand-red bg-white inline-block px-3 py-1 rounded mb-4">4.3. CC</h3>
+                                <p class="font-semibold text-gray-300 mb-2">Complemento Circunstancial</p>
+                                <p class="text-sm text-gray-400 mb-4">Indica circunstancias de tiempo, lugar, modo, causa, compañía, etc.</p>
+                                <div class="bg-gray-900 p-3 rounded text-sm italic">
+                                    Los chicos juegan en el parque todos los días.<br>
+                                    <span class="text-brand-red font-bold block mt-2">CC de lugar / CC de tiempo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 5. Análisis Sintáctico & 6. Clasificación -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        
+                        <!-- Análisis -->
+                        <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-red">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                <span class="material-icons text-brand-red">search</span>
+                                5. Análisis Sintáctico
+                            </h2>
+                            <p class="text-gray-700 mb-6">Consiste en identificar y clasificar cada uno de los elementos que la componen. Ejemplo de análisis:</p>
+                            
+                            <div class="flex flex-wrap gap-2 text-center text-sm font-bold justify-center items-end bg-gray-50 p-4 rounded-xl border">
+                                <div class="flex flex-col gap-2">
+                                    <span class="bg-white px-3 py-2 rounded shadow">Los estudiantes</span>
+                                    <span class="text-grammar-sujeto text-xs">&darr;<br>Núcleo del sujeto</span>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <span class="bg-white px-3 py-2 rounded shadow">leen</span>
+                                    <span class="text-grammar-verbo text-xs">&darr;<br>Núcleo del predicado</span>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <span class="bg-white px-3 py-2 rounded shadow">un libro interesante</span>
+                                    <span class="text-purple-700 text-xs">&darr;<br>Complemento directo (CD)</span>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <span class="bg-white px-3 py-2 rounded shadow">en la biblioteca</span>
+                                    <span class="text-blue-600 text-xs">&darr;<br>Complemento circunstancial<br>de lugar (CCL)</span>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <span class="bg-white px-3 py-2 rounded shadow">todos los días.</span>
+                                    <span class="text-orange-600 text-xs">&darr;<br>Complemento circunstancial<br>de tiempo (CCT)</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 bg-blue-50 border border-blue-200 p-4 rounded-lg flex items-start gap-3">
+                                <span class="material-icons text-blue-500">info</span>
+                                <div>
+                                    <h4 class="font-bold text-blue-900">RECUERDA</h4>
+                                    <p class="text-sm text-blue-800">La oración simple es la unidad básica de la comunicación. Comprender su estructura te ayudará a construir mejores ideas y a expresarte con claridad.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Clasificación -->
+                        <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-red">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                                <span class="material-icons text-brand-red">category</span>
+                                6. Clasificación según la actitud del hablante
+                            </h2>
+                            
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-gray-100 text-gray-800 font-bold px-2 py-1 rounded w-8 text-center flex-shrink-0">...</div>
+                                    <div>
+                                        <p class="font-bold text-gray-800">Enunciativas: <span class="font-normal text-gray-600">informan algo.</span></p>
+                                        <p class="text-sm text-gray-500 italic">Ej: La pelicula fue muy interesante.</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-gray-100 text-gray-800 font-bold px-2 py-1 rounded w-8 text-center flex-shrink-0">?</div>
+                                    <div>
+                                        <p class="font-bold text-gray-800">Interrogativas: <span class="font-normal text-gray-600">expresan pregunta.</span></p>
+                                        <p class="text-sm text-gray-500 italic">Ej: ¿Vendrás mañana a clase?</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-gray-100 text-gray-800 font-bold px-2 py-1 rounded w-8 text-center flex-shrink-0">!</div>
+                                    <div>
+                                        <p class="font-bold text-gray-800">Exclamativas: <span class="font-normal text-gray-600">expresan emoción.</span></p>
+                                        <p class="text-sm text-gray-500 italic">Ej.: ¡Qué hermoso amanecer!</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-gray-100 text-gray-800 font-bold px-2 py-1 rounded w-8 text-center flex-shrink-0">¡!</div>
+                                    <div>
+                                        <p class="font-bold text-gray-800">Imperativas: <span class="font-normal text-gray-600">expresan orden o mandato.</span></p>
+                                        <p class="text-sm text-gray-500 italic">Ej.: Cierra la puerta, por favor.</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-gray-100 text-gray-800 font-bold px-2 py-1 rounded text-center w-8 flex-shrink-0"><span class="material-icons text-sm">star</span></div>
+                                    <div>
+                                        <p class="font-bold text-gray-800">Desiderativas: <span class="font-normal text-gray-600">expresan deseo.</span></p>
+                                        <p class="text-sm text-gray-500 italic">Ej.: Ojalá ganemos el concurso.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </section>
+
+                    </div>
+
+                    <!-- 7. Ejemplos y 8. Por qué es importante -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <section class="bg-gray-50 p-6 rounded-2xl shadow border border-gray-200">
+                            <h2 class="text-2xl font-bold text-brand-red mb-4">7. Ejemplos de oraciones simples</h2>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-center gap-2"><span class="w-2 h-2 bg-brand-red rounded-full"></span> Mi hermano toca la guitarra muy bien.</li>
+                                <li class="flex items-center gap-2"><span class="w-2 h-2 bg-brand-red rounded-full"></span> Las flores adornan el jardin de mi casa.</li>
+                                <li class="flex items-center gap-2"><span class="w-2 h-2 bg-brand-red rounded-full"></span> El profesor explicó el tema con claridad.</li>
+                                <li class="flex items-center gap-2"><span class="w-2 h-2 bg-brand-red rounded-full"></span> Nosotros viajeremos a la playa en diciembre.</li>
+                                <li class="flex items-center gap-2"><span class="w-2 h-2 bg-brand-red rounded-full"></span> Ella prepara deliciosos postres para su familia.</li>
+                            </ul>
+                        </section>
+                        
+                        <section class="bg-brand-red text-white p-6 rounded-2xl shadow">
+                            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                                <span class="material-icons">help_outline</span> 8. ¿Por qué es importante?
+                            </h2>
+                            <ul class="space-y-3 text-red-50">
+                                <li class="flex items-start gap-2"><span class="material-icons text-sm mt-1">check</span> Porque es la base para construir oraciones más complejas.</li>
+                                <li class="flex items-start gap-2"><span class="material-icons text-sm mt-1">check</span> Porque mejora nuestra comunicación oral y escrita.</li>
+                                <li class="flex items-start gap-2"><span class="material-icons text-sm mt-1">check</span> Porque nos permite expresar ideas con claridad y precisión.</li>
+                                <li class="flex items-start gap-2"><span class="material-icons text-sm mt-1">check</span> Porque desarralla habilidades de análisis y pensamiento crítico.</li>
+                            </ul>
+                            <div class="mt-6 pt-4 border-t border-red-500">
+                                <p class="font-bold italic text-center">
+                                    "Cada oración que construyes es un paso hacia un pensamiento más claro y una comunicación más efectiva."
+                                </p>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- DESGLOSE DE SINTAGMAS (Árbol Sintáctico) -->
+                    <section class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+                        <div class="bg-gray-800 text-white p-6 text-center">
+                            <h2 class="text-3xl font-extrabold uppercase tracking-wide">Desglose de Sintagmas</h2>
+                            <p class="text-gray-300 mt-2">Árbol sintáctico de la oración simple</p>
+                        </div>
+                        
+                        <div class="p-8">
+                            
+                            <!-- Explicación central -->
+                            <div class="text-center mb-8 max-w-3xl mx-auto">
+                                <h3 class="text-xl font-bold text-gray-800">ORACIÓN SIMPLE</h3>
+                                <p class="text-gray-600 mt-2">Tiene un solo verbo en forma conjugada y expresa una idea completa.</p>
+                                <div class="bg-gray-100 p-4 rounded-lg mt-4 text-lg font-medium text-gray-800 shadow-inner">
+                                    Ejemplo: El niño estudioso lee un libro interesante en la biblioteca.
+                                </div>
+                                <div class="mt-4 font-bold text-brand-red bg-red-50 inline-block px-4 py-2 rounded-full text-sm">
+                                    ESTRUCTURA GENERAL: SN (El niño estudioso) + SV (lee un libro interesante en la biblioteca.)
+                                </div>
+                                <p class="mt-4 text-sm text-gray-500">
+                                    <strong>NOTA SOBRE LA ORACIÓN:</strong> Esta oración está en voz activa, con un verbo en forma personal y expresa una idea completa. Su estructura básica es <strong>SUJETO (SN) + PREDICADO (SV) = ORACIÓN SIMPLE</strong>.
+                                </p>
+                            </div>
+
+                            <!-- Tabla Visual del Árbol (Representación adaptada a Web) -->
+                            <div class="overflow-x-auto pb-6">
+                                <div class="min-w-max flex flex-col gap-4 text-center text-sm">
+                                    
+                                    <!-- Nivel 1: Palabras -->
+                                    <div class="flex gap-2 justify-center font-bold text-lg text-gray-800">
+                                        <div class="w-24">El</div>
+                                        <div class="w-24">niño</div>
+                                        <div class="w-24">estudioso</div>
+                                        <div class="w-24 text-brand-red">lee</div>
+                                        <div class="w-24">un</div>
+                                        <div class="w-24">libro</div>
+                                        <div class="w-28">interesante</div>
+                                        <div class="w-20">en</div>
+                                        <div class="w-16">la</div>
+                                        <div class="w-28">biblioteca</div>
+                                        <div class="w-8">.</div>
+                                    </div>
+                                    
+                                    <!-- Nivel 2: Categorías (Nombres cortos) -->
+                                    <div class="flex gap-2 justify-center text-gray-600">
+                                        <div class="w-24 border-t pt-2">Det.<br><span class="text-xs">(artículo determinado)</span></div>
+                                        <div class="w-24 border-t pt-2">Núcleo<br><span class="text-xs">(sustantivo común)</span></div>
+                                        <div class="w-24 border-t pt-2">Modif.<br><span class="text-xs">(adjetivo calificativo)</span></div>
+                                        <div class="w-24 border-t border-brand-red pt-2 text-brand-red">Verbo<br><span class="text-xs">(núcleo verbal)</span></div>
+                                        <div class="w-24 border-t pt-2">Det.<br><span class="text-xs">(artículo indeterminado)</span></div>
+                                        <div class="w-24 border-t pt-2">Núcleo<br><span class="text-xs">(sustantivo común)</span></div>
+                                        <div class="w-28 border-t pt-2">Modif.<br><span class="text-xs">(adjetivo calificativo)</span></div>
+                                        <div class="w-20 border-t pt-2">Prep.<br><span class="text-xs">(preposición)</span></div>
+                                        <div class="w-16 border-t pt-2">Det.<br><span class="text-xs">(artículo determinado)</span></div>
+                                        <div class="w-28 border-t pt-2">Núcleo<br><span class="text-xs">(sustantivo común)</span></div>
+                                        <div class="w-8 border-t pt-2">Signo de puntuación</div>
+                                    </div>
+
+                                    <!-- Nivel 3: Sintagmas Internos -->
+                                    <div class="flex justify-center mt-4">
+                                        <div class="flex gap-2">
+                                            <div class="w-[300px] border-t-2 border-grammar-sujeto pt-2 font-bold text-grammar-sujeto">
+                                                SN - SINTAGMA NOMINAL (Sujeto)<br>
+                                                <span class="font-normal text-xs text-gray-600">Núcleo del SN: niño</span>
+                                            </div>
+                                            <div class="w-[660px] border-t-2 border-grammar-predicado pt-2 font-bold text-grammar-predicado">
+                                                SV - SINTAGMA VERBAL (Predicado)
+                                                <div class="flex mt-2 font-normal text-xs justify-around text-gray-600">
+                                                    <div class="border-t border-gray-300 pt-1">Núcleo Verbal (NV): lee</div>
+                                                    <div class="border-t border-gray-300 pt-1 w-48 text-center">
+                                                        <span class="font-bold text-gray-800">Complemento Directo (CD)</span><br>
+                                                        (¿Qué lee?)<br>Núcleo del CD: libro
+                                                    </div>
+                                                    <div class="border-t border-gray-300 pt-1 w-48 text-center">
+                                                        <span class="font-bold text-gray-800">Complemento Circ. Lugar (CCL)</span><br>
+                                                        (¿Dónde lee?)<br>Núcleo del CCL: biblioteca
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Paneles de Información Adicional Inferior -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 border-t border-gray-200 pt-8">
+                                
+                                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                    <h4 class="font-bold text-brand-red mb-3 border-b pb-2">Funciones</h4>
+                                    <ul class="text-sm space-y-3 text-gray-700">
+                                        <li><strong>FUNCIÓN DEL SN (SUJETO):</strong> Indica quién realiza la acción del verbo.</li>
+                                        <li><strong>FUNCIÓN DEL CD:</strong> Recibe directamente la acción del verbo. <span class="italic text-gray-500">(¿Qué lee? un libro interesante)</span></li>
+                                        <li><strong>FUNCIÓN DEL CCL:</strong> Indica el lugar donde ocurre la acción. <span class="italic text-gray-500">(¿Dónde lee? en la biblioteca)</span></li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                    <h4 class="font-bold text-brand-red mb-3 border-b pb-2">Tipos & Categorías</h4>
+                                    <ul class="text-sm space-y-2 text-gray-700 mb-4">
+                                        <li class="font-bold text-gray-800">Tipos de Sintagmas:</li>
+                                        <li><span class="font-medium text-grammar-sujeto">SN:</span> El niño estudioso</li>
+                                        <li><span class="font-medium text-grammar-predicado">SV:</span> lee un libro interesante en la biblioteca</li>
+                                        <li><span class="font-medium">CD:</span> un libro interesante</li>
+                                        <li><span class="font-medium">CCL:</span> en la biblioteca</li>
+                                    </ul>
+                                    <ul class="text-sm space-y-1 text-gray-700">
+                                        <li class="font-bold text-gray-800">Categorías Gramaticales Presentes:</li>
+                                        <li><strong>Sustantivos (N):</strong> niño, libro, biblioteca</li>
+                                        <li><strong>Adjetivos (Adj):</strong> estudioso, interesante</li>
+                                        <li><strong>Determinantes (Det):</strong> el, un, la</li>
+                                        <li><strong>Verbo (V):</strong> lee</li>
+                                        <li><strong>Preposición (Prep):</strong> en</li>
+                                        <li><strong>Signo de puntuación:</strong> .</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-brand-red text-white p-5 rounded-lg shadow-md">
+                                    <h4 class="font-bold mb-3 border-b border-red-400 pb-2 flex items-center gap-2">
+                                        <span class="material-icons text-sm">settings</span> Análisis del verbo
+                                    </h4>
+                                    <ul class="text-sm space-y-1 text-red-50">
+                                        <li><strong>Verbo:</strong> leer</li>
+                                        <li><strong>Modo:</strong> indicativo</li>
+                                        <li><strong>Tiempo:</strong> presente</li>
+                                        <li><strong>Persona:</strong> 3ª persona</li>
+                                        <li><strong>Número:</strong> singular</li>
+                                        <li><strong>Conjugación:</strong> 2ª (-er)</li>
+                                        <li><strong>Voz:</strong> activa</li>
+                                        <li><strong>Forma verbal:</strong> lee (forma simple)</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <div class="text-center pb-12 pt-4">
+                        <p class="text-sm text-gray-400">Dominar la oración simple es el primer paso para escribir y hablar con coherencia, claridad y precisión.</p>
+                    </div>
+
+                </div>
+            </transition>
+            
+            <!-- CONTENIDO POR DEFECTO SI NO HAY DOCUMENTO ACTIVO -->
+            <div v-show="!activeDocument" class="text-center py-20">
+                <span class="material-icons text-6xl text-gray-300">description</span>
+                <h2 class="text-2xl font-bold text-gray-500 mt-4">Selecciona un documento del menú superior</h2>
+            </div>
+            
+        </main>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                // ID del documento que se muestra al cargar
+                activeDocument: 'doc1',
+                
+                // Array de documentos (escalable para el futuro)
+                documents: [
+                    { 
+                        id: 'doc1', 
+                        title: 'La Oración Simple', 
+                        icon: 'menu_book' 
+                    }
+                    // Para agregar más documentos, simplemente inserta un nuevo objeto aquí:
+                    // { id: 'doc2', title: 'Nuevo Documento', icon: 'article' }
+                ]
+            }
+        });
+    </script>
+</body>
+</html>
