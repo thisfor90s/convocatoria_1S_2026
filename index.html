@@ -42,13 +42,22 @@
     <style>
         /* Transiciones suaves para la interactividad de Vue */
         .fade-enter-active, .fade-leave-active {
-            transition: opacity 0.3s;
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
         .fade-enter, .fade-leave-to {
             opacity: 0;
+            transform: translateY(10px);
         }
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        /* Estilos para el acordeón (Bibliografía) */
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
         }
     </style>
 </head>
@@ -56,21 +65,21 @@
 
     <div id="app" class="min-h-screen flex flex-col">
         
-        <!-- HEADER & NAVEGACIÓN (Escalable) -->
+        <!-- HEADER & NAVEGACIÓN -->
         <header class="bg-white shadow-md sticky top-0 z-50">
             <!-- Barra superior decorativa -->
             <div class="h-2 bg-brand-red w-full"></div>
             
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
-                    <!-- Menú de Navegación Alineado a la Izquierda -->
-                    <nav class="flex space-x-4">
+                    <!-- Menú de Navegación -->
+                    <nav class="flex space-x-4 overflow-x-auto py-2">
                         <button 
                             v-for="doc in documents" 
                             :key="doc.id"
                             @click="activeDocument = doc.id"
                             :class="[
-                                'px-4 py-2 rounded-md text-sm font-bold flex items-center gap-2 transition-all duration-200',
+                                'px-4 py-2 rounded-md text-sm font-bold flex items-center gap-2 transition-all duration-200 whitespace-nowrap',
                                 activeDocument === doc.id 
                                     ? 'bg-brand-red text-white shadow-md transform scale-105' 
                                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
@@ -87,10 +96,11 @@
         <!-- ÁREA PRINCIPAL DE CONTENIDO DINÁMICO -->
         <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
             
-            <!-- CONTENIDO DE LOS DOCUMENTOS -->
             <transition name="fade" mode="out-in">
                 
-                <!-- DOCUMENTO 1: LA ORACIÓN SIMPLE -->
+                <!-- ==========================================
+                     DOCUMENTO 1: LA ORACIÓN SIMPLE
+                     ========================================== -->
                 <div v-if="activeDocument === 'doc1'" key="doc1" class="space-y-12">
                     
                     <!-- Encabezado del Documento -->
@@ -196,9 +206,8 @@
                         </div>
                     </section>
 
-                    <!-- 2. El Sujeto y 3. El Predicado (Detalles) -->
+                    <!-- 2. El Sujeto y 3. El Predicado -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        
                         <!-- Columna Sujeto -->
                         <section class="space-y-6">
                             <h2 class="text-3xl font-extrabold text-gray-800 border-b-2 border-gray-200 pb-2">2. El Sujeto</h2>
@@ -212,7 +221,7 @@
                                     </li>
                                     <li class="bg-gray-50 p-4 rounded-lg">
                                         <span class="font-bold text-gray-800">b) Sujeto tácito (elíptico):</span> No aparece, pero se entiende por la forma del verbo.
-                                        <div class="mt-2 text-gray-600 italic border-l-4 border-grammar-sujeto pl-3">Ejemplo: Estudiamos todos los días. <br><span class="text-sm">(Yo estudiamos todos los dias - *Nota: transcripción literal del texto*).</span></div>
+                                        <div class="mt-2 text-gray-600 italic border-l-4 border-grammar-sujeto pl-3">Ejemplo: Estudiamos todos los días. <br><span class="text-sm">(Yo estudiamos todos los dias).</span></div>
                                     </li>
                                 </ul>
                             </div>
@@ -308,7 +317,6 @@
 
                     <!-- 5. Análisis Sintáctico & 6. Clasificación -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        
                         <!-- Análisis -->
                         <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-red">
                             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
@@ -353,7 +361,7 @@
                         <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-red">
                             <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                                 <span class="material-icons text-brand-red">category</span>
-                                6. Clasificación según la actitud del hablante
+                                6. Clasificación
                             </h2>
                             
                             <ul class="space-y-4">
@@ -394,7 +402,6 @@
                                 </li>
                             </ul>
                         </section>
-
                     </div>
 
                     <!-- 7. Ejemplos y 8. Por qué es importante -->
@@ -428,7 +435,7 @@
                         </section>
                     </div>
 
-                    <!-- DESGLOSE DE SINTAGMAS (Árbol Sintáctico) -->
+                    <!-- DESGLOSE DE SINTAGMAS -->
                     <section class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
                         <div class="bg-gray-800 text-white p-6 text-center">
                             <h2 class="text-3xl font-extrabold uppercase tracking-wide">Desglose de Sintagmas</h2>
@@ -436,8 +443,6 @@
                         </div>
                         
                         <div class="p-8">
-                            
-                            <!-- Explicación central -->
                             <div class="text-center mb-8 max-w-3xl mx-auto">
                                 <h3 class="text-xl font-bold text-gray-800">ORACIÓN SIMPLE</h3>
                                 <p class="text-gray-600 mt-2">Tiene un solo verbo en forma conjugada y expresa una idea completa.</p>
@@ -452,11 +457,8 @@
                                 </p>
                             </div>
 
-                            <!-- Tabla Visual del Árbol (Representación adaptada a Web) -->
                             <div class="overflow-x-auto pb-6">
                                 <div class="min-w-max flex flex-col gap-4 text-center text-sm">
-                                    
-                                    <!-- Nivel 1: Palabras -->
                                     <div class="flex gap-2 justify-center font-bold text-lg text-gray-800">
                                         <div class="w-24">El</div>
                                         <div class="w-24">niño</div>
@@ -470,8 +472,6 @@
                                         <div class="w-28">biblioteca</div>
                                         <div class="w-8">.</div>
                                     </div>
-                                    
-                                    <!-- Nivel 2: Categorías (Nombres cortos) -->
                                     <div class="flex gap-2 justify-center text-gray-600">
                                         <div class="w-24 border-t pt-2">Det.<br><span class="text-xs">(artículo determinado)</span></div>
                                         <div class="w-24 border-t pt-2">Núcleo<br><span class="text-xs">(sustantivo común)</span></div>
@@ -485,8 +485,6 @@
                                         <div class="w-28 border-t pt-2">Núcleo<br><span class="text-xs">(sustantivo común)</span></div>
                                         <div class="w-8 border-t pt-2">Signo de puntuación</div>
                                     </div>
-
-                                    <!-- Nivel 3: Sintagmas Internos -->
                                     <div class="flex justify-center mt-4">
                                         <div class="flex gap-2">
                                             <div class="w-[300px] border-t-2 border-grammar-sujeto pt-2 font-bold text-grammar-sujeto">
@@ -512,9 +510,7 @@
                                 </div>
                             </div>
                             
-                            <!-- Paneles de Información Adicional Inferior -->
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 border-t border-gray-200 pt-8">
-                                
                                 <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
                                     <h4 class="font-bold text-brand-red mb-3 border-b pb-2">Funciones</h4>
                                     <ul class="text-sm space-y-3 text-gray-700">
@@ -523,7 +519,6 @@
                                         <li><strong>FUNCIÓN DEL CCL:</strong> Indica el lugar donde ocurre la acción. <span class="italic text-gray-500">(¿Dónde lee? en la biblioteca)</span></li>
                                     </ul>
                                 </div>
-
                                 <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
                                     <h4 class="font-bold text-brand-red mb-3 border-b pb-2">Tipos & Categorías</h4>
                                     <ul class="text-sm space-y-2 text-gray-700 mb-4">
@@ -533,17 +528,7 @@
                                         <li><span class="font-medium">CD:</span> un libro interesante</li>
                                         <li><span class="font-medium">CCL:</span> en la biblioteca</li>
                                     </ul>
-                                    <ul class="text-sm space-y-1 text-gray-700">
-                                        <li class="font-bold text-gray-800">Categorías Gramaticales Presentes:</li>
-                                        <li><strong>Sustantivos (N):</strong> niño, libro, biblioteca</li>
-                                        <li><strong>Adjetivos (Adj):</strong> estudioso, interesante</li>
-                                        <li><strong>Determinantes (Det):</strong> el, un, la</li>
-                                        <li><strong>Verbo (V):</strong> lee</li>
-                                        <li><strong>Preposición (Prep):</strong> en</li>
-                                        <li><strong>Signo de puntuación:</strong> .</li>
-                                    </ul>
                                 </div>
-
                                 <div class="bg-brand-red text-white p-5 rounded-lg shadow-md">
                                     <h4 class="font-bold mb-3 border-b border-red-400 pb-2 flex items-center gap-2">
                                         <span class="material-icons text-sm">settings</span> Análisis del verbo
@@ -559,874 +544,103 @@
                                         <li><strong>Forma verbal:</strong> lee (forma simple)</li>
                                     </ul>
                                 </div>
-
                             </div>
                         </div>
                     </section>
                     
                     <div class="text-center pb-12 pt-4">
-                        <p class="text-sm text-gray-400">Dominar la oración simple es el primer paso para escribir y hablar con coherencia, claridad y precisión.</p>
+                        <p class="text-sm text-gray-400 mb-6">Dominar la oración simple es el primer paso para escribir y hablar con coherencia, claridad y precisión.</p>
+                        
+                        <!-- BOTÓN EXTERNO AÑADIDO -->
+                        <a href="https://uta.pressbooks.pub/espanolpractico/chapter/capitulo-4-la-estructura-de-las-oraciones/" target="_blank" class="inline-flex items-center gap-2 bg-brand-red text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-red-800 transition-all hover:scale-105 transform duration-200">
+                            <span class="material-icons">menu_book</span> Leer más sobre la Estructura de las Oraciones
+                        </a>
                     </div>
-
                 </div>
 
-                <!-- DOCUMENTO 2: MORFOSINTAXIS -->
-                <div v-if="activeDocument === 'doc2'" key="doc2" class="space-y-12">
-                    
-                    <!-- Encabezado del Documento -->
-                    <div class="text-center space-y-4">
-                        <div class="inline-block bg-brand-dark text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-sm mb-4 shadow-md">
-                            Morfosintaxis
-                        </div>
-                        <h1 class="text-4xl md:text-5xl font-extrabold text-brand-red tracking-tight uppercase">
-                            La Morfología. Los Morfemas.
-                        </h1>
-                        <p class="text-xl text-gray-600 font-medium italic">
-                            Estructura, formación y variantes de las palabras.
-                        </p>
-                    </div>
-
-                    <!-- 1. Introducción a la Morfología -->
-                    <section class="bg-white rounded-2xl shadow-lg p-8 border-t-4 border-gray-800">
-                        <div class="flex items-center gap-3 mb-6">
-                            <span class="material-icons text-brand-red text-3xl">account_tree</span>
-                            <h2 class="text-2xl font-bold text-gray-800">1. La Morfología y Los Morfemas</h2>
-                        </div>
-                        
-                        <div class="space-y-6 text-gray-700 leading-relaxed">
-                            <p>
-                                La <strong>Morfología</strong> estudia la forma de las palabras, los distintos elementos significativos que las componen, y el papel gramatical que desempeña cada uno de estos segmentos dentro de la palabra. También se encarga de clasificar las palabras en categorías (sustantivos, adjetivos, verbos...) y de la formación y variantes que pueden presentar las palabras.
-                            </p>
-                            <p class="bg-red-50 p-6 rounded-xl border-l-4 border-brand-red text-lg">
-                                Llamamos <strong>morfema</strong> a la unidad mínima significativa dentro de una palabra. Articulando estas unidades mínimas formamos las palabras; el significado de la palabra depende de la combinación de los significados parciales de los distintos morfemas que la componen.
-                            </p>
-                            <p class="italic text-gray-500">
-                                Este es el secreto de la enorme economía del sistema lingüístico capaz de generar infinitos enunciados con un número limitado de morfemas.
-                            </p>
-
-                            <div class="flex flex-wrap justify-center items-center gap-4 mt-8 bg-gray-50 p-6 rounded-xl border border-gray-200">
-                                <div class="text-center">
-                                    <div class="text-xl font-bold text-gray-800">Cas</div>
-                                    <div class="text-sm font-bold text-brand-red">Morfema RAÍZ</div>
-                                    <div class="text-xs text-gray-500">(lexema)</div>
-                                </div>
-                                <div class="text-3xl font-light text-gray-400">+</div>
-                                <div class="text-center">
-                                    <div class="text-xl font-bold text-gray-800">ona</div>
-                                    <div class="text-sm font-bold text-blue-600">Morfema AFIJO</div>
-                                    <div class="text-xs text-gray-500">(morfema)</div>
-                                </div>
-                                <div class="text-3xl font-light text-gray-400">=</div>
-                                <div class="text-2xl font-black text-brand-dark bg-white px-4 py-2 rounded shadow">
-                                    Casona
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- 2. Clases de Morfemas -->
-                    <section class="space-y-8">
-                        <h2 class="text-3xl font-extrabold text-gray-800 border-b-2 border-gray-200 pb-2">2. Clases de Morfemas</h2>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <!-- Morfemas Léxicos -->
-                            <div class="bg-white p-6 rounded-2xl shadow-lg border-t-8 border-brand-red">
-                                <h3 class="text-2xl font-bold text-brand-red mb-4">Morfemas léxicos: lexemas o raíz</h3>
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-2">
-                                        <span class="material-icons text-brand-red text-sm mt-1">stop</span>
-                                        <span>Son las unidades mínimas con significado léxico (<span class="italic font-medium">mar</span>: superficie de agua salada que ocupa la mayor parte del globo terráqueo).</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <span class="material-icons text-brand-red text-sm mt-1">stop</span>
-                                        <span>Constituyen la raíz o base léxica de las palabras (<span class="italic font-medium">marinero, marino</span>).</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <span class="material-icons text-brand-red text-sm mt-1">stop</span>
-                                        <span>Permanecen invariables o varían muy poco (<span class="italic font-medium">vent-arrón / vent-isca / vient-o</span>).</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <span class="material-icons text-brand-red text-sm mt-1">stop</span>
-                                        <span>Sus inventarios permanecen abiertos: podemos crear nuevos lexemas (<span class="italic font-medium">flipar</span>).</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <span class="material-icons text-brand-red text-sm mt-1">stop</span>
-                                        <span>Las palabras que comparten el mismo lexema forman una <strong>familia de palabras o familia léxica</strong> (<span class="italic font-medium">mar: marinero / submarino / ultramarinos / marinería / marítimo</span>).</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <!-- Morfemas Gramaticales -->
-                            <div class="bg-white p-6 rounded-2xl shadow-lg border-t-8 border-blue-600">
-                                <h3 class="text-2xl font-bold text-blue-600 mb-4">Morfemas gramaticales: morfemas o afijos</h3>
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-start gap-2">
-                                        <span class="material-icons text-blue-600 text-sm mt-1">stop</span>
-                                        <span>Son las unidades mínimas con significado gramatical (género, número, persona, tiempo).</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <span class="material-icons text-blue-600 text-sm mt-1">stop</span>
-                                        <span>Se añaden a la raíz para formar variantes de una misma palabra (<span class="italic font-medium">niño, niña</span>) o nuevas palabras derivadas (<span class="italic font-medium">aniñado, niñera, niñería</span>).</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <span class="material-icons text-blue-600 text-sm mt-1">stop</span>
-                                        <span>Presentan variaciones que añaden matices y nuevos significados a las palabras (<span class="italic font-medium">hacer, rehacer, contrahecho</span>).</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <span class="material-icons text-blue-600 text-sm mt-1">stop</span>
-                                        <span>Forman un inventario cerrado, no se crean nuevos afijos.</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <span class="material-icons text-blue-600 text-sm mt-1">stop</span>
-                                        <span>Cuando un afijo no presenta una marca exterior pero se opone a otro afijo hablamos de <strong>morfema cero o marca cero</strong>: <span class="italic font-medium">niña-Ø</span> (singular) / <span class="italic font-medium">niñas</span> (plural).</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Advertencia / No te confundas -->
-                        <div class="bg-amber-100 border-l-4 border-amber-500 p-4 rounded text-amber-900 font-bold flex flex-col sm:flex-row justify-center items-center gap-4 text-center">
-                            <span class="material-icons text-3xl">warning</span>
-                            <div>
-                                <p>NO TE CONFUNDAS:</p>
-                                <p class="font-normal"><strong>Morfema léxico:</strong> lexema o raíz. | <strong>Morfema gramatical:</strong> morfema o afijo.</p>
-                            </div>
-                        </div>
-
-                        <!-- Árbol de Morfemas (Diseño Infográfico) -->
-                        <div class="bg-gray-100 p-8 rounded-2xl shadow-inner overflow-x-auto">
-                            <div class="min-w-[800px] flex flex-col items-center relative pb-8">
-                                
-                                <!-- Raíz Principal -->
-                                <div class="bg-yellow-200 border-2 border-yellow-400 font-bold text-gray-800 px-12 py-3 rounded text-xl z-10">
-                                    MORFEMAS
-                                </div>
-                                <div class="w-px h-6 bg-gray-400"></div>
-                                <div class="w-[500px] border-t-2 border-gray-400"></div>
-                                
-                                <div class="flex justify-between w-[500px]">
-                                    <div class="w-px h-6 bg-gray-400"></div>
-                                    <div class="w-px h-6 bg-gray-400"></div>
-                                </div>
-
-                                <div class="flex justify-between w-[660px]">
-                                    <!-- Rama Izquierda (Raíz) -->
-                                    <div class="w-64 flex flex-col items-center">
-                                        <div class="bg-orange-100 border-2 border-orange-300 text-center px-6 py-3 rounded w-full z-10 shadow-sm">
-                                            Morfemas léxicos<br>
-                                            <span class="font-bold text-lg">RAÍZ</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Rama Derecha (Afijos) -->
-                                    <div class="w-80 flex flex-col items-center">
-                                        <div class="bg-orange-100 border-2 border-orange-300 text-center px-6 py-3 rounded w-full z-10 shadow-sm">
-                                            Morfemas gramaticales<br>
-                                            <span class="font-bold text-lg">AFIJOS</span>
-                                        </div>
-                                        <div class="w-px h-6 bg-gray-400"></div>
-                                        <div class="w-full border-t-2 border-gray-400"></div>
-                                        
-                                        <div class="flex justify-between w-full">
-                                            <div class="w-px h-6 bg-gray-400"></div>
-                                            <div class="w-px h-6 bg-gray-400"></div>
-                                        </div>
-
-                                        <div class="flex justify-between w-[380px]">
-                                            <!-- Flexivos -->
-                                            <div class="w-40 flex flex-col items-center">
-                                                <div class="bg-orange-50 border border-orange-200 text-center py-2 rounded w-full z-10">
-                                                    Flexivos
-                                                </div>
-                                                <div class="w-px h-4 bg-gray-300"></div>
-                                                <div class="bg-white border border-gray-200 p-3 rounded w-full text-sm text-left shadow-sm">
-                                                    - Género<br>
-                                                    - Número<br>
-                                                    - Desinencias verbales
-                                                </div>
-                                            </div>
-
-                                            <!-- Derivativos -->
-                                            <div class="w-48 flex flex-col items-center">
-                                                <div class="bg-orange-50 border border-orange-200 text-center py-2 rounded w-full z-10">
-                                                    Derivativos
-                                                </div>
-                                                <div class="w-px h-4 bg-gray-300"></div>
-                                                <div class="bg-white border border-gray-200 p-3 rounded w-full text-sm text-left shadow-sm">
-                                                    <span class="font-bold">Significativos:</span><br>
-                                                    - Prefijos<br>
-                                                    - Interfijos<br>
-                                                    - Sufijos<br><br>
-                                                    <span class="font-bold">Apreciativos:</span><br>
-                                                    - Aumentativos<br>
-                                                    - Diminutivos<br>
-                                                    - Despectivos
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- 2.1 Clases de Afijos -->
-                    <section class="space-y-6 bg-white p-8 rounded-2xl shadow-lg">
-                        <h2 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-6">2.1 Clases de afijos</h2>
-
-                        <!-- Flexivos -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-bold text-brand-red flex items-center gap-2 mb-4">
-                                <span class="bg-brand-red text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-sm">1</span> 
-                                Los afijos flexivos o desinencias
-                            </h3>
-                            <div class="ml-8 text-gray-700 space-y-2">
-                                <p class="font-medium bg-gray-50 p-3 rounded inline-block border border-gray-200">
-                                    Se sitúan al final de la palabra. No forman palabras nuevas, sino variaciones de la misma palabra.
-                                </p>
-                                <p class="italic text-gray-500 mb-4">Ejemplo: niño -a -os -as; amo -as -a -amos -áis -an</p>
-                                
-                                <p class="font-bold text-gray-800 mt-4">Clases:</p>
-                                <ul class="list-disc list-inside space-y-1 ml-4">
-                                    <li><strong>Desinencias de género:</strong> masculino / femenino: <span class="italic">niñ-o / -a</span>.</li>
-                                    <li><strong>Desinencias de número:</strong> singular / plural: <span class="italic">niña-Ø / niñas</span>.</li>
-                                    <li><strong>Desinencias verbales:</strong> aportan los significados de persona, tiempo, modo, aspecto (<span class="italic">-aba, -abas, -aba, -ábamos, -abais, -aban</span>).</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Derivativos -->
-                        <div>
-                            <h3 class="text-xl font-bold text-blue-600 flex items-center gap-2 mb-4">
-                                <span class="bg-blue-600 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-sm">2</span> 
-                                Los afijos derivativos
-                            </h3>
-                            <div class="ml-8 text-gray-700 space-y-4">
-                                <p class="font-medium bg-gray-50 p-3 rounded border border-gray-200">
-                                    Se sitúan delante o detrás del lexema y modifican su significado. Forman palabras nuevas derivadas.
-                                </p>
-                                <p class="italic text-gray-500">Ejemplo: acuático / subacuático; marido / maridaje. <br> guerra > guerrero.</p>
-                                <p>Aportan significados variados: tamaño (<span class="italic">caserón</span>), cualidad (<span class="italic">blancura</span>), lugar (<span class="italic">trigal</span>).</p>
-                                
-                                <p class="font-bold text-gray-800 text-lg mt-6 border-b border-gray-100 pb-1">Clases de derivativos:</p>
-                                
-                                <!-- Derivativos Significativos -->
-                                <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
-                                    <h4 class="font-bold text-blue-800 text-lg mb-2">A) Derivativos significativos</h4>
-                                    <p class="text-sm mb-4">La palabra derivada tiene una significación diferente de la del término primitivo (<span class="italic">libro / librería / librero</span>).</p>
-                                    
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <div class="bg-white p-4 rounded shadow-sm border border-gray-100">
-                                            <h5 class="font-bold text-brand-red border-b pb-1 mb-2">Prefijos</h5>
-                                            <ul class="text-sm space-y-2">
-                                                <li>- Van delante de la raíz (<span class="italic">interurbano, anormal</span>).</li>
-                                                <li>- Pueden ir juntos más de un prefijo (<span class="italic">des-en-terrar</span>).</li>
-                                                <li>- No suelen cambiar la categoría de la palabra: sala (sustantivo) > antesala (sustantivo).</li>
-                                                <li>- Aportan nuevos significados; muchas palabras antónimas se forman con ellos: natural > antinatural.</li>
-                                            </ul>
-                                        </div>
-                                        <div class="bg-white p-4 rounded shadow-sm border border-gray-100">
-                                            <h5 class="font-bold text-brand-red border-b pb-1 mb-2">Interfijos</h5>
-                                            <ul class="text-sm space-y-2">
-                                                <li>- Se intercalan entre la raíz y el sufijo.</li>
-                                                <li>- No aportan información significativa, funcionan como enlace.</li>
-                                                <li>- Son átonos.</li>
-                                                <li class="bg-gray-100 p-2 rounded mt-2 text-xs">
-                                                    <strong>Ejemplos:</strong><br>
-                                                    -c- / -ec- / -ez- (café-c-ito, lech-ec-ita)<br>
-                                                    -et- / -t- (café-t-era)<br>
-                                                    -l- / -il- (com-il-ón)<br>
-                                                    -d- / -ad- (pan-ad-ero)
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="bg-white p-4 rounded shadow-sm border border-gray-100">
-                                            <h5 class="font-bold text-brand-red border-b pb-1 mb-2">Sufijos</h5>
-                                            <ul class="text-sm space-y-2">
-                                                <li>- Van detrás de la raíz y aportan un significado nuevo.</li>
-                                                <li>- Son tónicos (<span class="italic">leche > lechero</span>).</li>
-                                                <li>- Puede haber más de un sufijo: <span class="italic">ros-al-eda</span>.</li>
-                                                <li>- La palabra derivada suele cambiar de categoría léxica: amor (sust.) > enamoradizo (adj.). A veces se mantiene: rosa (sust.) > rosal (sust.).</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Derivativos Apreciativos -->
-                                <div class="bg-green-50/50 p-5 rounded-xl border border-green-100 mt-4">
-                                    <h4 class="font-bold text-green-800 text-lg mb-2">B) Derivativos apreciativos</h4>
-                                    <p class="text-sm mb-4">Introducen matices de apreciación positivos o negativos; la palabra derivada tiene la misma significación y la misma categoría que la palabra primitiva (<span class="italic">ojazos</span>). Son tónicos.</p>
-                                    
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <div class="bg-white p-4 rounded shadow-sm border border-gray-100">
-                                            <h5 class="font-bold text-green-700 border-b pb-1 mb-2">Aumentativos</h5>
-                                            <p class="text-sm mb-2">Aportan valores de admiración (<span class="italic">golazo</span>), rechazo (<span class="italic">cabezota</span>), cariño (<span class="italic">grandullón</span>) asociados o no al aumento de tamaño.</p>
-                                            <p class="text-xs bg-gray-50 p-2 rounded"><strong>Sufijos:</strong> -azo, -aza; -ón, -ona; -ote, -ota.<br>Ej: perrazo, barcaza, ligón, grandote.</p>
-                                        </div>
-                                        <div class="bg-white p-4 rounded shadow-sm border border-gray-100">
-                                            <h5 class="font-bold text-green-700 border-b pb-1 mb-2">Diminutivos</h5>
-                                            <p class="text-sm mb-2">Aportan valores de afecto, asociados o no a la disminución de tamaño.</p>
-                                            <p class="text-xs bg-gray-50 p-2 rounded"><strong>Sufijos:</strong> -ito, -ita; -illo, -illa; -uelo, -uela; -ete, -eta.<br>Ej: barquito, mesilla, chicuelo, panceta.</p>
-                                        </div>
-                                        <div class="bg-white p-4 rounded shadow-sm border border-gray-100">
-                                            <h5 class="font-bold text-green-700 border-b pb-1 mb-2">Despectivos</h5>
-                                            <p class="text-sm mb-2">Indican siempre desprecio (<span class="italic">pajarraco, poetastro</span>) mezclado a veces con afecto (<span class="italic">pequeñaja</span>).</p>
-                                            <p class="text-xs bg-gray-50 p-2 rounded"><strong>Sufijos:</strong> -ajo/-a; -ejo/-eja; -astro/-a; -ucho/-a; -uzo/-a.<br>Ej: pajarraco, poetastro, perrucho, pequeñajo.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Listado Completo de Sufijos -->
-                    <section class="bg-brand-dark text-white rounded-2xl shadow-xl p-8">
-                        <h2 class="text-3xl font-extrabold mb-6 text-center text-brand-light">Clasificación de Sufijos</h2>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <!-- Categoría 1 -->
-                            <div class="bg-gray-800 p-4 rounded-lg">
-                                <h4 class="text-brand-red font-bold mb-2 uppercase text-sm border-b border-gray-700 pb-1">De Origen y Procedencia</h4>
-                                <ul class="text-sm text-gray-300 space-y-1">
-                                    <li>-ano/-a: asturiano</li>
-                                    <li>-eno/-a: chileno</li>
-                                    <li>-ense: almeriense</li>
-                                    <li>-eño/-a: madrileño</li>
-                                    <li>-és, -esa: genovés</li>
-                                    <li>-í: marroquí</li>
-                                    <li>-ín/-a: mallorquín</li>
-                                    <li>-ino/-a: granadino</li>
-                                    <li>-ita: israelita</li>
-                                    <li>-o/-a: sueco</li>
-                                    <li>-ol/-a: español</li>
-                                </ul>
-                            </div>
-                            
-                            <!-- Categoría 2 -->
-                            <div class="bg-gray-800 p-4 rounded-lg">
-                                <h4 class="text-brand-red font-bold mb-2 uppercase text-sm border-b border-gray-700 pb-1">De Colectividad</h4>
-                                <ul class="text-sm text-gray-300 space-y-1 mb-4">
-                                    <li>-ada: yeguada</li>
-                                    <li>-aje: equipaje</li>
-                                    <li>-ambre: pelambre</li>
-                                    <li>-ería: palabrería</li>
-                                    <li>-ado: profesorado</li>
-                                    <li>-al: instrumental</li>
-                                    <li>-amen: velamen</li>
-                                    <li>-erío: caserío</li>
-                                </ul>
-                                <h4 class="text-brand-red font-bold mb-2 uppercase text-sm border-b border-gray-700 pb-1">De Lugar</h4>
-                                <ul class="text-sm text-gray-300 space-y-1">
-                                    <li>-ado/-a: condado</li>
-                                    <li>-ería: panadería</li>
-                                    <li>-torio: consultorio</li>
-                                    <li>-dor: comedor</li>
-                                    <li>-eda: rosaleda</li>
-                                    <li>-era: gasolinera</li>
-                                    <li>-ero: trastero</li>
-                                    <li>-teca: discoteca</li>
-                                </ul>
-                            </div>
-
-                            <!-- Categoría 3 -->
-                            <div class="bg-gray-800 p-4 rounded-lg">
-                                <h4 class="text-brand-red font-bold mb-2 uppercase text-sm border-b border-gray-700 pb-1">De Actor o Agente</h4>
-                                <ul class="text-sm text-gray-300 space-y-1 mb-4">
-                                    <li>-tor/triz: actor</li>
-                                    <li>-dor/-dora: pulidor</li>
-                                    <li>-nte: comerciante</li>
-                                    <li>-er/-a: panadero</li>
-                                    <li>-ín/a: bailarín</li>
-                                </ul>
-                                <h4 class="text-brand-red font-bold mb-2 uppercase text-sm border-b border-gray-700 pb-1">Profesión o Cargo</h4>
-                                <ul class="text-sm text-gray-300 space-y-1 mb-4">
-                                    <li>-er/-a: ingeniero</li>
-                                    <li>-ista: electricista</li>
-                                    <li>-ario/-a: empresario</li>
-                                </ul>
-                                <h4 class="text-brand-red font-bold mb-2 uppercase text-sm border-b border-gray-700 pb-1">Escuela o Doctrina</h4>
-                                <ul class="text-sm text-gray-300 space-y-1">
-                                    <li>-ismo: cristianismo</li>
-                                    <li>-ista: comunista</li>
-                                    <li>-ano/-a: freudiano</li>
-                                </ul>
-                            </div>
-
-                            <!-- Categoría 4 -->
-                            <div class="bg-gray-800 p-4 rounded-lg">
-                                <h4 class="text-brand-red font-bold mb-2 uppercase text-sm border-b border-gray-700 pb-1">De Cualidad</h4>
-                                <ul class="text-sm text-gray-300 space-y-1 mb-4">
-                                    <li>-az: vivaz</li>
-                                    <li>-ería: tontería</li>
-                                    <li>-dad: temeridad, bondad</li>
-                                    <li>-tud: finitud</li>
-                                    <li>-ura: cordura</li>
-                                    <li>-al: trigal</li>
-                                    <li>-ar: melonar</li>
-                                    <li>-ario: campanario</li>
-                                    <li>-ez: idiotez</li>
-                                    <li>-or: dulzor</li>
-                                    <li>-umbre: podredumbre</li>
-                                </ul>
-                                <h4 class="text-brand-red font-bold mb-2 uppercase text-sm border-b border-gray-700 pb-1">Acción / Crías / Inst.</h4>
-                                <ul class="text-sm text-gray-300 space-y-1">
-                                    <li><strong>Acción:</strong> -anza, -ato, -dura, -eo, -ía, -ción, -miento...</li>
-                                    <li><strong>Crías:</strong> -ato (lebrato), -ezno (lobezno), -ín (palomino)...</li>
-                                    <li><strong>Instr:</strong> -dera (regadera), -dor (secador)</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- 3. Alomorfos y Derivativos Lexicalizados -->
-                    <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="bg-white p-6 rounded-2xl shadow border-l-4 border-indigo-500">
-                            <h2 class="text-2xl font-bold text-gray-800 mb-4">3.1 Los Alomorfos</h2>
-                            <p class="text-gray-700 mb-4">Son las variantes que puede presentar un mismo morfema (alo-morfos: otras formas):</p>
-                            <ul class="bg-gray-50 p-4 rounded-lg space-y-2 text-sm text-gray-800 font-mono">
-                                <li><strong class="text-indigo-600">de-</strong> (de-/dis-/des-): decomisar / disconforme / deshecho</li>
-                                <li><strong class="text-indigo-600">in-</strong> (i-/in-/im-): irrompible, incorrecto / impaciente</li>
-                                <li><strong class="text-indigo-600">en-</strong> (en-/em-): encestar, embotellar</li>
-                                <li><strong class="text-indigo-600">a-</strong> (a-/an-): asimétrico, analfabeto</li>
-                                <li><strong class="text-indigo-600">-it-</strong> (-cit-/-ecit-/-cecit-): pueblito, florecita, piececito</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="bg-white p-6 rounded-2xl shadow border-l-4 border-teal-500">
-                            <h2 class="text-2xl font-bold text-gray-800 mb-4">3.2 Los derivativos muertos o lexicalizados</h2>
-                            <p class="text-gray-700 mb-4">Son aquellos morfemas que ya no los sentimos como morfemas derivativos, sino como componentes léxicos de la palabra.</p>
-                            <p class="text-gray-700 mb-4">Este es el caso de algunas palabras formadas con los derivativos apreciativos, a menudo originan palabras cuyo significado es distinto del sustantivo primitivo:</p>
-                            <div class="flex flex-wrap gap-2 text-sm font-bold text-teal-800">
-                                <span class="bg-teal-50 px-3 py-1 rounded border border-teal-200">caña / cañón</span>
-                                <span class="bg-teal-50 px-3 py-1 rounded border border-teal-200">colcha / colchón</span>
-                                <span class="bg-teal-50 px-3 py-1 rounded border border-teal-200">piña / piñón</span>
-                                <span class="bg-teal-50 px-3 py-1 rounded border border-teal-200">bomba / bombilla</span>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- 4. Formación de Palabras (Tablas) -->
-                    <section class="space-y-6">
-                        <h2 class="text-3xl font-extrabold text-gray-800 border-b-2 border-gray-200 pb-2">4. La Formación de Palabras</h2>
-                        
-                        <h3 class="text-xl font-bold text-brand-red">4.1 Según los morfemas que las componen</h3>
-                        <div class="overflow-x-auto bg-white rounded-xl shadow border border-gray-200">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-gray-100 text-gray-800 uppercase text-sm">
-                                        <th class="p-4 border-b">Primitivas</th>
-                                        <th class="p-4 border-b">Derivadas</th>
-                                        <th class="p-4 border-b">Compuestas</th>
-                                        <th class="p-4 border-b">Parasintéticas</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-sm text-gray-700 align-top">
-                                    <tr>
-                                        <td class="p-4 border-b border-r bg-gray-50 font-bold">RAÍZ</td>
-                                        <td class="p-4 border-b border-r">
-                                            <strong>Prefijación:</strong> Prefijo + RAÍZ<br>
-                                            <strong>Sufijación:</strong> RAÍZ + Sufijo
-                                        </td>
-                                        <td class="p-4 border-b border-r font-bold">RAÍZ + RAÍZ</td>
-                                        <td class="p-4 border-b bg-gray-50 font-bold">RAÍZ + RAÍZ + Sufijo<br><span class="text-xs font-normal">Composición + derivación</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 border-b border-r italic text-brand-red">mar / queso</td>
-                                        <td class="p-4 border-b border-r italic text-brand-red">
-                                            in-finito, des-hac-ía<br>
-                                            mes-ita, lech-ero
-                                        </td>
-                                        <td class="p-4 border-b border-r italic text-brand-red">
-                                            par-aguas, pati-corto, alti-bajo
-                                        </td>
-                                        <td class="p-4 border-b italic text-brand-red bg-gray-50">
-                                            quince-añ-ero
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 border-b border-r">
-                                            Pueden llevar afijos flexivos (desinencias)<br>
-                                            <span class="italic text-gray-500">mares, quesos</span>
-                                        </td>
-                                        <td class="p-4 border-b border-r">
-                                            Pueden llevar afijos flexivos (desinencias)<br>
-                                            <span class="italic text-gray-500">infinito/a/os/as, mesita/as, deshacía/as/a, lechera/o/a</span>
-                                        </td>
-                                        <td class="p-4 border-b border-r">
-                                            Pueden llevar afijos flexivos (desinencias)<br>
-                                            <span class="italic text-gray-500">paticorto /-a/-os/-as, altibajo / -s</span>
-                                            <br><br>
-                                            <span class="text-xs">Algunas palabras compuestas mantienen el orden de la frase: <span class="italic font-bold">correveidile, sabelotodo</span></span>
-                                        </td>
-                                        <td class="p-4 border-b bg-gray-50">
-                                            <strong>Prefijo + RAÍZ + Sufijo</strong><br>
-                                            <span class="italic text-gray-500">des-alm-ado, a-vej-entado</span><br><br>
-                                            <span class="text-xs text-amber-700 font-bold block bg-amber-50 p-2 rounded">ATENCIÓN: Estas palabras se forman simultáneamente con todos sus componentes. No existen: *quinceaño / *añero | *desalma / *almado | *avejado / *vejentado</span>
-                                            <br>Pueden llevar afijos flexivos:<br><span class="italic text-gray-500">desalmados / quinceañeras</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h3 class="text-xl font-bold text-brand-red mt-8">4.2 Según su capacidad flexiva</h3>
-                        <p class="text-sm text-gray-600 mb-4">Tradicionalmente se reconocen nueve categorías de palabras. Por su capacidad flexiva (posibilidad de recibir o no desinencias) podemos agruparlas en dos grupos:</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
-                                <h4 class="font-bold text-blue-900 text-lg mb-2">Palabras Variables</h4>
-                                <p class="text-sm text-blue-800 bg-white p-2 rounded inline-block mb-4 shadow-sm">Admiten desinencias de género, número y verbales</p>
-                                <ul class="space-y-2 text-sm text-gray-800">
-                                    <li><strong>Artículos:</strong> los, las</li>
-                                    <li><strong>Sustantivos:</strong> gato /-a/-os / -as</li>
-                                    <li><strong>Adjetivos:</strong> listo /-a/-os/-as</li>
-                                    <li><strong>Pronombres:</strong> ellos/-as</li>
-                                    <li><strong>Verbos:</strong> amo/-as/-a/-amos / -áis/-an</li>
-                                </ul>
-                            </div>
-                            <div class="bg-gray-100 p-6 rounded-xl border border-gray-300">
-                                <h4 class="font-bold text-gray-900 text-lg mb-2">Palabras Invariables</h4>
-                                <p class="text-sm text-gray-700 bg-white p-2 rounded inline-block mb-4 shadow-sm">No admiten desinencias</p>
-                                <ul class="space-y-2 text-sm text-gray-800">
-                                    <li><strong>Adverbios:</strong> aquí, allí, arriba, abajo</li>
-                                    <li><strong>Preposiciones:</strong> a, ante, bajo, con</li>
-                                    <li><strong>Conjunciones:</strong> y, ni, aunque</li>
-                                    <li><strong>Interjecciones:</strong> eh, caramba</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- 5. Otros procedimientos -->
-                    <section class="bg-white p-8 rounded-2xl shadow-lg">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-6">5. Otros procedimientos de formación de palabras</h2>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div class="bg-gray-50 p-5 rounded-lg border-l-4 border-brand-red">
-                                <h3 class="font-bold text-lg text-gray-800">Siglas</h3>
-                                <p class="text-sm text-gray-600 mb-2">Nombres formados por las iniciales de varias palabras.</p>
-                                <p class="text-sm font-mono bg-white p-2 border inline-block rounded">
-                                    <strong>ONG:</strong> Organización No Gubernamental. <span class="italic text-gray-500">En plural: las ONG.</span><br>
-                                    <strong>UCI:</strong> Unidad de Cuidados Intensivos. <span class="italic text-gray-500">En plural: las UCI.</span>
-                                </p>
-                            </div>
-                            <div class="bg-gray-50 p-5 rounded-lg border-l-4 border-blue-600">
-                                <h3 class="font-bold text-lg text-gray-800">Acrónimos</h3>
-                                <p class="text-sm text-gray-600 mb-2">Nombres formados por siglas silabeadas (<span class="italic">OTAN: o-tan, OVNI: ov-ni</span>) y más de una letra de varias palabras. Es una nueva palabra.</p>
-                                <p class="text-sm font-mono bg-white p-2 border inline-block rounded">
-                                    <strong>RENFE:</strong> Red Nacional de Ferrocarriles Españoles<br>
-                                    <strong>Bonobús:</strong> bono + autobús.
-                                </p>
-                            </div>
-                            <div class="bg-gray-50 p-5 rounded-lg border-l-4 border-green-600">
-                                <h3 class="font-bold text-lg text-gray-800">Abreviaturas</h3>
-                                <p class="text-sm text-gray-600 mb-2">Palabras reducidas a las primeras grafías. <br><em>Características:</em> acaban en punto, mantienen tilde, máximo dos seguidas.</p>
-                                <p class="text-sm font-mono bg-white p-2 border inline-block rounded">
-                                    Ej.: etc., art., ej., pág., Ilmo. Sr.
-                                </p>
-                            </div>
-                            <div class="bg-gray-50 p-5 rounded-lg border-l-4 border-purple-600">
-                                <h3 class="font-bold text-lg text-gray-800">Acortamiento</h3>
-                                <p class="text-sm text-gray-600 mb-2">Consiste en reducir una palabra larga suprimiendo letras o sílabas. Propio de la lengua coloquial.</p>
-                                <p class="text-sm font-mono bg-white p-2 border inline-block rounded">
-                                    bicicleta &gt; bici; profesor &gt; profe
-                                </p>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- 6. Léxico Científico / Griego y Latino -->
-                    <section class="space-y-6">
-                        <div class="text-center mb-8">
-                            <h2 class="text-3xl font-extrabold text-brand-red uppercase">6. El Léxico Científico y Humanístico</h2>
-                            <p class="text-xl text-gray-600">Compuestos de base Griega y Latina</p>
-                            <p class="text-sm text-gray-500 max-w-3xl mx-auto mt-4">
-                                Se consideran palabras compuestas las formadas por diversas raíces de origen griego o latino que mantienen su capacidad léxica (<span class="italic">cronoterapia, hidroavión</span>). Lo sabemos porque podemos formar con ellas distintas voces (<span class="italic">cronómetro, hídrico, hidroterapia</span>).
-                            </p>
-                        </div>
-
-                        <h3 class="text-xl font-bold bg-gray-800 text-white inline-block px-4 py-2 rounded-t-lg">Principales Raíces Prefijas</h3>
-                        <div class="bg-white border-2 border-gray-800 p-6 rounded-b-xl rounded-tr-xl shadow-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-6 text-sm">
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">aero-</span> (aire): aeronáutico</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">anfi-</span> (ambos): anfibio</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">antropo-</span> (hombre): antropocentrismo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">auto-</span> (por sí mismo): automóvil</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">bi-</span> (dos): bisílabo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">bio-</span> (vida): biodiversidad</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">cardio-</span> (corazón): cardiopatía</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">céfalo-</span> (cabeza): cefalópodo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">cinemato-</span> (movimiento): cinematógrafo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">cosmo-</span> (universo): cosmonave</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">crono-</span> (tiempo): cronómetro</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">deca-</span> (diez): decámetro</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">demo-</span> (pueblo): democracia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">dodeca-</span> (doce): dodecaedro</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">enea-</span> (once): eneasílabo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">fono-</span> (sonido): foniatra</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">foto-</span> (luz): fotografía</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">gastro-</span> (estómago): gastronomía</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">geo-</span> (tierra): geología</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">hecto-</span> (ciento): hectómetro</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">helio-</span> (sol): helioterapia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">hemato-, hemo-</span> (sangre): hemorragia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">hemi-</span> (medio): hemiciclo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">hepato-</span> (hígado): hepatitis</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">hetero-</span> (otro): heterodoxo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">hexa-</span> (seis): hexágono</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">hidro-</span> (agua): hidroterapia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">homeo-, homo-</span> (semejante): homosexual</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">iso-</span> (igual): isotermo</div>
-                            
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">kilo-</span> (mil): kilómetro</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">macro-</span> (grande): macrocéfalo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">maxi-</span> (grande): maxifalda</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">megalo-, mega-</span> (grande): megalomanía</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">micro-</span> (pequeño): microbio</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">mili-</span> (milésima parte): milímetro</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">mini-</span> (pequeño): minifundio</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">minus-</span> (menos): minusválido</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">miria-</span> (diez mil): miriámetro</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">miso-</span> (aversión u odio): misoginia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">multi-</span> (muchos): multirreincidencia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">necro-</span> (muerto): necrópolis</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">neo-</span> (nuevo): neofascista</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">neuro-</span> (nervio): neurocirujano</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">octa-, octo-</span> (ocho): octaedro, octosílabo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">oftalmo-</span> (ojo): oftalmología</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">oligo-, olig-</span> (poco): oligofrénico, oligarquía</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">omni-</span> (todo): omnipresente</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">pedia-</span> (niño): pediatra</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">poli-</span> (muchos): polifonía</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">proto-</span> (primero): protagonista</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">psico-</span> (mente): psicología</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">sema-</span> (significado): semáforo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">seudo-</span> (falso): seudoartista</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">tele-</span> (a distancia): teléfono, telégrafo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">termo-</span> (calor): termómetro</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">topo-</span> (lugar): topografía</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">xeno-</span> (extranjero): xenofobia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-brand-red">zoo-</span> (animal): zoología</div>
-                        </div>
-
-                        <h3 class="text-xl font-bold bg-blue-800 text-white inline-block px-4 py-2 rounded-t-lg mt-8">Principales Raíces Sufijas</h3>
-                        <div class="bg-white border-2 border-blue-800 p-6 rounded-b-xl rounded-tr-xl shadow-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-6 text-sm">
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-algia</span> (dolor): neuralgia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-arquía</span> (gobierno): monarquía, monarca</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-cefalía, -céfalo</span> (cabeza): hidrocefalia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-cidio, -cida</span> (matar): homicidio, homicida</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-cracia, -crata</span> (gobierno): democracia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-cronía, -crono</span> (tiempo): isocronía</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-edro</span> (plano): octaedro</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-emia</span> (sangre): leucemia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-fagia</span> (acción de comer): antropofagia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-fero</span> (que produce): prolífero</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-filia, -filo</span> (amistad): hispanofilia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-fobia, -fobo</span> (enemistad): xenofobia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-fonía, -fono</span> (sonido): teléfono</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-forme</span> (que tiene forma): filiforme</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-gamia, -gamo</span> (matrimonio): poligamia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-genia, -geno</span> (origen): patógeno</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-gono</span> (ángulo): polígono</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-grafía, -grafo</span> (escritura): tipógrafo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-iatría, -iatra</span> (medicina): pediatría, psiquiatra</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-latría, -latra</span> (adoración): ególatra</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-logía, -logo</span> (estudio): psicología</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-manía, -mano</span> (locura): piromanía, pirómano</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-metría, -metro</span> (medida): pluviómetro</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-morfo</span> (forma): morfología</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-nomía, -nomo</span> (ley): autonomía</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-onimia, -ónimo</span> (nombre): toponimia, topónimo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-patía, -pata</span> (enfermedad): encefalopatía, psicópata</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-pode, -podo</span> (que tiene pies): trípode, cefalópodo</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-ptero</span> (que tiene alas): díptero</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-ragia</span> (derrame): hemorragia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-sclerosis</span> (endurecimiento): arterioesclerosis</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-scopio</span> (observar detenidamente): microscopio, telescopio</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-terapia</span> (curación): psicoterapia</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-tomía</span> (división): anatomía</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-voro</span> (que come): omnívoro</div>
-                            <div class="border-b border-gray-100 py-1"><span class="font-bold text-blue-700">-zoo</span> (animal): protozoo</div>
-                        </div>
-                    </section>
-
-                    <!-- 7. Para saber más (Fragmentación) -->
-                    <section class="bg-gray-800 text-white p-8 rounded-2xl shadow-xl mt-12 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 p-4 opacity-10">
-                            <span class="material-icons text-9xl">menu_book</span>
-                        </div>
-                        
-                        <h2 class="text-3xl font-extrabold text-brand-light flex items-center gap-3 border-b border-gray-600 pb-4 mb-6">
-                            <span class="material-icons text-brand-red text-4xl">lightbulb</span> 
-                            Para saber más: Fragmentación de palabras
-                        </h2>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 z-10 relative">
-                            <div>
-                                <h3 class="text-xl font-bold text-brand-red mb-3">1. Las palabras derivadas</h3>
-                                <p class="text-sm text-gray-300 mb-4">
-                                    No está demasiado clara la diferencia entre los prefijos cultos (latinos y griegos) que forman palabras derivadas por prefijación (<span class="italic">extrarradio, supermercado, reconstrucción</span>) y los que forman palabras compuestas (<span class="italic">fotografía</span>).
-                                    Admitimos como prefijos que forman derivadas a los elementos preposicionales y cuantificadores:
-                                </p>
-                                <ul class="text-sm space-y-2 text-gray-400">
-                                    <li><strong class="text-white">Preposicionales:</strong> a-lejar, ante-sala, anti-clerical, con-ceder, contra-decir, de-forme, des-hacer, en-durecer, in-flamar, entre-tejer, inter-nacional, por-venir, per-durar, pro-curar, sin-vergüenza, so-terrado, sub-secretario, sobre-carga, supra-nacional, super-mercado, tras-tornar.</li>
-                                    <li><strong class="text-white">Cuantificadores/Intensificadores:</strong> multi-precio, semi-círculo, super-hombre, hiper-mercado, re-leer, ex-ministro, extra-ordinario, vice-secretario.</li>
-                                </ul>
-                            </div>
-                            
-                            <div>
-                                <h3 class="text-xl font-bold text-brand-red mb-3">2. Las palabras compuestas. Acentuación.</h3>
-                                <p class="text-sm text-gray-300 mb-4">
-                                    Formadas por diversas raíces de origen griego o latino que mantienen su capacidad léxica (<span class="italic">cronómetro, hidroavión</span>). Clases:
-                                </p>
-                                <ul class="text-sm space-y-4 text-gray-400">
-                                    <li>
-                                        <strong class="text-white">Dos o más lexemas (raíces):</strong><br>
-                                        - <em class="text-gray-300">El primer lexema pierde el acento:</em> bocacalle, azulgrana, pararrayos, agridulce (cambio fonético).<br>
-                                        - <em class="text-gray-300">El primer lexema no pierde el acento:</em> Forma verbal + pronombre enclítico (<span class="italic">Entrégaselo</span>).
-                                    </li>
-                                    <li>
-                                        <strong class="text-white">Lexemas separados por espacio o guión:</strong><br>
-                                        Ambos conservan su sílaba tónica: tren bala, físico-químico. (Si hay guión, sólo el segundo marca la concordancia: <span class="italic">cuestión léxico-semántica</span>).
-                                    </li>
-                                    <li>
-                                        <strong class="text-white">Palabras autónomas en griego/latín:</strong><br>
-                                        Presentan cambios al adaptarse: miso + antropo = misantropía.
-                                    </li>
-                                    <li>
-                                        <strong class="text-white">Adverbios en -mente:</strong><br>
-                                        Palabras compuestas de dos lexemas: limpia-mente, amable-mente, fácil-mente.
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-
-                </div>
-
-                <!-- DOCUMENTO 3: OVA GAMIFICADO -->
+                <!-- ==========================================
+                     DOCUMENTO 3: OVA GAMIFICADO
+                     ========================================== -->
                 <div v-if="activeDocument === 'doc3'" key="doc3" class="space-y-12">
                     
-                    <!-- Encabezado del Documento -->
-                    <div class="text-center space-y-4">
-                        <div class="inline-flex items-center gap-2 bg-purple-700 text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-sm mb-4 shadow-md">
-                            <span class="material-icons text-lg">sports_esports</span>
-                            OVA Gamificado
+                    <!-- Hero Banner Gamificado -->
+                    <div class="relative bg-gray-900 text-white rounded-3xl overflow-hidden shadow-2xl mt-4">
+                        <div class="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000); background-position: 0 0, 10px 10px; background-size: 20px 20px;"></div>
+                        
+                        <div class="relative z-10 p-10 md:p-14 text-center space-y-6">
+                            <div class="inline-flex items-center gap-2 bg-yellow-500 text-yellow-900 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">
+                                <span class="material-icons text-sm">stars</span> Nivel: Octavo Grado
+                            </div>
+                            <h1 class="text-4xl md:text-6xl font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500">
+                                OVA Gamificado
+                            </h1>
+                            <p class="text-xl md:text-2xl font-bold text-gray-300">SINTAXIS EN ACCIÓN: MISIÓN ORACIÓN PERFECTA</p>
                         </div>
-                        <h1 class="text-4xl md:text-5xl font-extrabold text-brand-dark tracking-tight uppercase">
-                            Sintaxis en Acción
-                        </h1>
-                        <p class="text-2xl text-purple-600 font-black italic tracking-wide">
-                            ¡Misión Oración Perfecta!
-                        </p>
                     </div>
 
-                    <!-- Video de YouTube Destacado -->
-                    <section class="max-w-4xl mx-auto bg-gray-900 rounded-3xl p-3 shadow-2xl transform hover:scale-[1.01] transition-transform duration-300">
-                        <div class="aspect-video rounded-2xl overflow-hidden bg-black relative">
+                    <!-- Introducción Sintetizada Gamificada -->
+                    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Card 1: El Problema -->
+                        <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100 relative overflow-hidden group hover:shadow-xl transition-shadow">
+                            <div class="absolute -right-4 -top-4 bg-red-100 rounded-full p-4 group-hover:scale-110 transition-transform">
+                                <span class="material-icons text-red-500 text-4xl">warning_amber</span>
+                            </div>
+                            <h3 class="font-bold text-xl text-gray-800 mb-3 relative z-10">El Desafío</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed relative z-10">La gramática tradicional suele basarse en la memorización y ejercicios repetitivos, lo que genera desmotivación y poco interés en los estudiantes de Lengua Castellana.</p>
+                        </div>
+
+                        <!-- Card 2: La Solución -->
+                        <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100 relative overflow-hidden group hover:shadow-xl transition-shadow">
+                            <div class="absolute -right-4 -top-4 bg-green-100 rounded-full p-4 group-hover:scale-110 transition-transform">
+                                <span class="material-icons text-green-500 text-4xl">extension</span>
+                            </div>
+                            <h3 class="font-bold text-xl text-gray-800 mb-3 relative z-10">La Solución Gamificada</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed relative z-10">Implementamos dinámicas de juego (retos, niveles, insignias) en un Objeto Virtual de Aprendizaje (OVA) para transformar el estudio de la oración simple en una aventura atractiva.</p>
+                        </div>
+
+                        <!-- Card 3: Mecánica (Misión) -->
+                        <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100 relative overflow-hidden group hover:shadow-xl transition-shadow lg:col-span-1 md:col-span-2">
+                            <div class="absolute -right-4 -top-4 bg-blue-100 rounded-full p-4 group-hover:scale-110 transition-transform">
+                                <span class="material-icons text-blue-500 text-4xl">sports_esports</span>
+                            </div>
+                            <h3 class="font-bold text-xl text-gray-800 mb-3 relative z-10">Tu Misión</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed relative z-10">Asume el rol de <strong>Agente Lingüístico</strong>. Superarás misiones de identificación y construcción usando herramientas como Genially, Quizizz y Canva, basándonos en la Taxonomía de Bloom.</p>
+                        </div>
+                    </section>
+
+                    <!-- Sección de Video Embebido -->
+                    <section class="bg-gray-100 p-8 rounded-3xl shadow-inner text-center">
+                        <div class="inline-flex items-center gap-2 text-brand-red font-bold mb-6">
+                            <span class="material-icons">play_circle</span> Conoce más sobre el proyecto
+                        </div>
+                        <div class="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-gray-800 bg-black aspect-video relative">
+                            <!-- Youtube Embed iframe -->
                             <iframe 
-                                class="absolute top-0 left-0 w-full h-full" 
-                                src="https://www.youtube.com/embed/RgGVn93bCNg" 
-                                title="OVA Gamificado Video" 
+                                class="absolute top-0 left-0 w-full h-full"
+                                src="https://www.youtube.com/embed/RgGVn93bCNg?si=2MAZtDG3yY8vAtwz" 
+                                title="YouTube video player" 
                                 frameborder="0" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
                                 allowfullscreen>
                             </iframe>
                         </div>
                     </section>
 
-                    <!-- Introducción (Sintetizada y Visual) -->
-                    <section class="bg-white rounded-2xl shadow-lg p-8 border-t-4 border-purple-600">
-                        <h2 class="text-3xl font-extrabold text-gray-800 mb-8 flex items-center gap-3 border-b pb-4">
-                            <span class="material-icons text-purple-600 text-4xl">rocket_launch</span> El Desafío y la Solución
-                        </h2>
-
-                        <!-- Grid de 2 columnas para el contexto -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                            <!-- Problema -->
-                            <div class="bg-red-50 p-6 rounded-xl border-l-4 border-brand-red shadow-sm hover:shadow-md transition-shadow">
-                                <h3 class="text-xl font-bold text-brand-red mb-3 flex items-center gap-2">
-                                    <span class="material-icons">warning_amber</span> El Problema
-                                </h3>
-                                <p class="text-gray-700 leading-relaxed text-sm">
-                                    La enseñanza tradicional de la gramática suele basarse en la <strong>memorización y ejercicios repetitivos</strong>. Esto genera desmotivación y escaso interés en los estudiantes al aprender la estructura de la oración simple, un pilar fundamental para la comunicación.
-                                </p>
-                            </div>
-                            <!-- Solución -->
-                            <div class="bg-purple-50 p-6 rounded-xl border-l-4 border-purple-600 shadow-sm hover:shadow-md transition-shadow">
-                                <h3 class="text-xl font-bold text-purple-800 mb-3 flex items-center gap-2">
-                                    <span class="material-icons">lightbulb</span> La Solución Gamificada
-                                </h3>
-                                <p class="text-gray-700 leading-relaxed text-sm">
-                                    Implementar un <strong>Objeto Virtual de Aprendizaje (OVA) Gamificado</strong>. Al usar mecánicas de juego (retos, niveles y retroalimentación), transformamos el aprendizaje monótono en una experiencia interactiva y altamente motivadora.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Bloque de Propósito Central -->
-                        <div class="bg-gray-900 text-white p-8 rounded-2xl shadow-xl mb-10 text-center relative overflow-hidden">
-                            <div class="absolute -right-4 -top-4 opacity-10">
-                                <span class="material-icons" style="font-size: 12rem;">track_changes</span>
-                            </div>
-                            <h3 class="text-lg font-bold text-purple-300 uppercase tracking-widest mb-3 relative z-10 flex justify-center items-center gap-2">
-                                <span class="material-icons">flag</span> Misión Principal
+                    <!-- Objetivos y Contenidos -->
+                    <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-2xl shadow-sm">
+                            <h3 class="font-bold text-blue-900 text-lg mb-2 flex items-center gap-2">
+                                <span class="material-icons">flag</span> Objetivo y Competencia
                             </h3>
-                            <p class="text-xl md:text-2xl font-light relative z-10 leading-relaxed max-w-3xl mx-auto">
-                                Diseñar un OVA para grado octavo que fortalezca la comprensión de la <strong class="text-brand-red">Oración Simple</strong>, estructurando retos progresivos basados en la <strong class="text-purple-400">Taxonomía de Bloom</strong>.
-                            </p>
+                            <p class="text-blue-800 text-sm leading-relaxed mb-3"><strong>Objetivo:</strong> Desarrollar competencias gramaticales y sintácticas mediante la identificación, análisis y producción de oraciones simples utilizando recursos digitales interactivos.</p>
+                            <p class="text-blue-800 text-sm leading-relaxed"><strong>Competencia:</strong> Analiza la estructura de la oración simple, identifica sus elementos constitutivos y los emplea adecuadamente en contextos comunicativos escritos y orales.</p>
                         </div>
 
-                        <!-- Características de la Misión (Grid 3 columnas) -->
-                        <div class="mb-2">
-                            <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                                <span class="material-icons text-gray-500">settings</span> Mecánica del Proyecto
+                        <div class="bg-orange-50 border-l-4 border-orange-500 p-6 rounded-r-2xl shadow-sm">
+                            <h3 class="font-bold text-orange-900 text-lg mb-2 flex items-center gap-2">
+                                <span class="material-icons">list_alt</span> Contenidos del OVA
                             </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div class="border border-gray-200 p-5 rounded-xl flex flex-col items-center text-center gap-3 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 bg-white">
-                                    <div class="bg-blue-100 text-blue-600 p-4 rounded-full">
-                                        <span class="material-icons text-3xl">support_agent</span>
-                                    </div>
-                                    <h4 class="font-bold text-gray-800 text-lg">Agentes Lingüísticos</h4>
-                                    <p class="text-sm text-gray-600">Los estudiantes asumen este rol para interactuar de forma autónoma y superar misiones sintácticas.</p>
-                                </div>
-                                <div class="border border-gray-200 p-5 rounded-xl flex flex-col items-center text-center gap-3 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 bg-white">
-                                    <div class="bg-yellow-100 text-yellow-600 p-4 rounded-full">
-                                        <span class="material-icons text-3xl">military_tech</span>
-                                    </div>
-                                    <h4 class="font-bold text-gray-800 text-lg">Recompensas</h4>
-                                    <p class="text-sm text-gray-600">Implementación de sistemas de puntos e insignias para incrementar la motivación intrínseca y extrínseca.</p>
-                                </div>
-                                <div class="border border-gray-200 p-5 rounded-xl flex flex-col items-center text-center gap-3 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 bg-white">
-                                    <div class="bg-green-100 text-green-600 p-4 rounded-full">
-                                        <span class="material-icons text-3xl">devices</span>
-                                    </div>
-                                    <h4 class="font-bold text-gray-800 text-lg">Ecosistema Digital</h4>
-                                    <p class="text-sm text-gray-600">Integración de herramientas como Genially, Wordwall, Quizizz, LearningApps y Canva.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Paneles de Objetivo, Competencia y Contenidos -->
-                    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-blue-50 border border-blue-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="bg-blue-600 text-white p-2 rounded-lg"><span class="material-icons">flag</span></div>
-                                <h3 class="font-bold text-xl text-blue-900">Objetivo General</h3>
-                            </div>
-                            <p class="text-blue-800 text-sm leading-relaxed">Desarrollar competencias gramaticales y sintácticas mediante la identificación, análisis y producción de oraciones simples utilizando recursos digitales interactivos.</p>
-                        </div>
-                        
-                        <div class="bg-green-50 border border-green-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="bg-green-600 text-white p-2 rounded-lg"><span class="material-icons">psychology</span></div>
-                                <h3 class="font-bold text-xl text-green-900">Competencia</h3>
-                            </div>
-                            <p class="text-green-800 text-sm leading-relaxed">Analiza la estructura de la oración simple, identifica sus elementos constitutivos y los emplea adecuadamente en contextos comunicativos escritos y orales.</p>
-                        </div>
-
-                        <div class="bg-orange-50 border border-orange-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="bg-orange-600 text-white p-2 rounded-lg"><span class="material-icons">format_list_bulleted</span></div>
-                                <h3 class="font-bold text-xl text-orange-900">Contenidos</h3>
-                            </div>
                             <p class="text-orange-800 text-sm leading-relaxed">Concepto de oración simple; sujeto expreso y tácito; núcleo del sujeto; predicado verbal y nominal; núcleo del predicado; complementos directo, indirecto y circunstancial entre otros; producción textual.</p>
                         </div>
                     </section>
@@ -1446,92 +660,94 @@
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <!-- Nivel 1: Recordar -->
-                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-blue-500 hover:-translate-y-1 transition-transform duration-300">
+                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-blue-500 hover:-translate-y-1 transition-transform duration-300 flex flex-col">
                                     <div class="text-xs font-bold text-blue-500 uppercase tracking-widest mb-1">Nivel 1: Recordar</div>
                                     <h3 class="font-black text-xl text-gray-800 mb-2">Memoria Sintáctica</h3>
-                                    <p class="text-sm text-gray-600 mb-6 h-10">Reconocer características de la oración simple.</p>
-                                    <a href="https://es.educaplay.com/recursos-educativos/3458287-test_sujeto_y_predicado.html" target="_blank" class="block w-full text-center bg-blue-100 hover:bg-blue-600 text-blue-700 hover:text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                                    <p class="text-sm text-gray-600 mb-6 flex-grow">Identificar las características, estructura y elementos fundamentales que conforman la oración simple en diferentes contextos comunicativos.</p>
+                                    <a href="https://es.educaplay.com/recursos-educativos/3458287-test_sujeto_y_predicado.html" target="_blank" class="block w-full text-center bg-blue-100 hover:bg-blue-600 text-blue-700 hover:text-white font-bold py-2 px-4 rounded-lg transition-colors mt-auto">
                                         Jugar Misión <span class="material-icons text-sm align-middle ml-1">launch</span>
                                     </a>
                                 </div>
 
                                 <!-- Nivel 2: Comprender -->
-                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-teal-500 hover:-translate-y-1 transition-transform duration-300">
+                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-teal-500 hover:-translate-y-1 transition-transform duration-300 flex flex-col">
                                     <div class="text-xs font-bold text-teal-500 uppercase tracking-widest mb-1">Nivel 2: Comprender</div>
                                     <h3 class="font-black text-xl text-gray-800 mb-2">Escape Room Gramatical</h3>
-                                    <p class="text-sm text-gray-600 mb-6 h-10">Explicar funciones de sujeto y predicado.</p>
-                                    <a href="https://es.educaplay.com/recursos-educativos/3929718-oracion_simple.html" target="_blank" class="block w-full text-center bg-teal-100 hover:bg-teal-600 text-teal-700 hover:text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                                    <p class="text-sm text-gray-600 mb-6 flex-grow">Explicar las funciones que desempeñan el sujeto, el predicado y sus respectivos núcleos dentro de la estructura de la oración simple.</p>
+                                    <a href="https://es.educaplay.com/recursos-educativos/3929718-oracion_simple.html" target="_blank" class="block w-full text-center bg-teal-100 hover:bg-teal-600 text-teal-700 hover:text-white font-bold py-2 px-4 rounded-lg transition-colors mt-auto">
                                         Jugar Misión <span class="material-icons text-sm align-middle ml-1">launch</span>
                                     </a>
                                 </div>
 
                                 <!-- Nivel 3: Aplicar -->
-                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-green-500 hover:-translate-y-1 transition-transform duration-300">
+                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-green-500 hover:-translate-y-1 transition-transform duration-300 flex flex-col">
                                     <div class="text-xs font-bold text-green-500 uppercase tracking-widest mb-1">Nivel 3: Aplicar</div>
                                     <h3 class="font-black text-xl text-gray-800 mb-2">Constructor de Oraciones</h3>
-                                    <p class="text-sm text-gray-600 mb-6 h-10">Construir oraciones simples.</p>
-                                    <a href="https://es.educaplay.com/recursos-educativos/5969365-oracion_simple.html" target="_blank" class="block w-full text-center bg-green-100 hover:bg-green-600 text-green-700 hover:text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                                    <p class="text-sm text-gray-600 mb-6 flex-grow">Emplear oraciones simples correctamente estructuradas a partir de situaciones, imágenes y contextos comunicativos específicos.</p>
+                                    <a href="https://es.educaplay.com/recursos-educativos/5969365-oracion_simple.html" target="_blank" class="block w-full text-center bg-green-100 hover:bg-green-600 text-green-700 hover:text-white font-bold py-2 px-4 rounded-lg transition-colors mt-auto">
                                         Jugar Misión <span class="material-icons text-sm align-middle ml-1">launch</span>
                                     </a>
                                 </div>
 
                                 <!-- Nivel 4: Analizar -->
-                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-yellow-500 hover:-translate-y-1 transition-transform duration-300">
+                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-yellow-500 hover:-translate-y-1 transition-transform duration-300 flex flex-col">
                                     <div class="text-xs font-bold text-yellow-600 uppercase tracking-widest mb-1">Nivel 4: Analizar</div>
                                     <h3 class="font-black text-xl text-gray-800 mb-2">Laboratorio Sintáctico</h3>
-                                    <p class="text-sm text-gray-600 mb-6 h-10">Identificar núcleos y complementos.</p>
-                                    <a href="https://es.educaplay.com/recursos-educativos/660015-sujeto_y_predicado_nucleos.html" target="_blank" class="block w-full text-center bg-yellow-100 hover:bg-yellow-500 text-yellow-800 hover:text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                                    <p class="text-sm text-gray-600 mb-6 flex-grow">Clasificar los componentes sintácticos de la oración simple, identificando núcleos, complementos y relaciones gramaticales entre sus elementos.</p>
+                                    <a href="https://es.educaplay.com/recursos-educativos/660015-sujeto_y_predicado_nucleos.html" target="_blank" class="block w-full text-center bg-yellow-100 hover:bg-yellow-500 text-yellow-800 hover:text-white font-bold py-2 px-4 rounded-lg transition-colors mt-auto">
                                         Jugar Misión <span class="material-icons text-sm align-middle ml-1">launch</span>
                                     </a>
                                 </div>
 
                                 <!-- Nivel 5: Evaluar -->
-                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-orange-500 hover:-translate-y-1 transition-transform duration-300">
+                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-orange-500 hover:-translate-y-1 transition-transform duration-300 flex flex-col">
                                     <div class="text-xs font-bold text-orange-500 uppercase tracking-widest mb-1">Nivel 5: Evaluar</div>
                                     <h3 class="font-black text-xl text-gray-800 mb-2">Tribunal de la Gramática</h3>
-                                    <p class="text-sm text-gray-600 mb-6 h-10">Corregir errores sintácticos.</p>
-                                    <a href="https://es.educaplay.com/recursos-educativos/23237057-frases_mal_escritas_para_corregir.html" target="_blank" class="block w-full text-center bg-orange-100 hover:bg-orange-600 text-orange-700 hover:text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                                    <p class="text-sm text-gray-600 mb-6 flex-grow">Valorar y corregir críticamente errores sintácticos, de concordancia y de estructura presentes en diferentes tipos de oraciones y textos breves.</p>
+                                    <a href="https://es.educaplay.com/recursos-educativos/23237057-frases_mal_escritas_para_corregir.html" target="_blank" class="block w-full text-center bg-orange-100 hover:bg-orange-600 text-orange-700 hover:text-white font-bold py-2 px-4 rounded-lg transition-colors mt-auto">
                                         Jugar Misión <span class="material-icons text-sm align-middle ml-1">launch</span>
                                     </a>
                                 </div>
 
                                 <!-- Nivel 6: Crear -->
-                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-purple-500 hover:-translate-y-1 transition-transform duration-300">
+                                <div class="bg-white rounded-xl p-6 shadow-lg border-b-4 border-purple-500 hover:-translate-y-1 transition-transform duration-300 flex flex-col">
                                     <div class="text-xs font-bold text-purple-500 uppercase tracking-widest mb-1">Nivel 6: Crear</div>
                                     <h3 class="font-black text-xl text-gray-800 mb-2">Influencer de la Sintaxis</h3>
-                                    <p class="text-sm text-gray-600 mb-6 h-10">Diseñar producto digital.</p>
-                                    <div class="block w-full text-center bg-gray-100 text-gray-500 font-bold py-2 px-4 rounded-lg cursor-not-allowed border border-dashed border-gray-300">
-                                        Misión de Aula <span class="material-icons text-sm align-middle ml-1">school</span>
-                                    </div>
+                                    <p class="text-sm text-gray-600 mb-6 flex-grow">Diseñar y elaborar un producto digital original que evidencie el uso adecuado de la oración simple y sus componentes sintácticos en situaciones reales de comunicación.</p>
+                                    <a href="https://www.canva.com/design/DAHMaN0dL90/raKZgx5vyPOJ5-5V1ZuINA/edit?ui=eyJBljp7fX0" target="_blank" class="block w-full text-center bg-purple-100 hover:bg-purple-600 text-purple-700 hover:text-white font-bold py-2 px-4 rounded-lg transition-colors mt-auto">
+                                        Jugar Misión <span class="material-icons text-sm align-middle ml-1">launch</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </section>
 
                     <!-- Conclusión -->
-                    <section class="bg-gradient-to-r from-brand-red to-purple-800 text-white rounded-2xl shadow-lg p-8 text-center border-b-8 border-brand-dark">
-                        <span class="material-icons text-4xl mb-4 text-purple-200">lightbulb_circle</span>
-                        <h2 class="text-2xl font-bold mb-4">Conclusión</h2>
-                        <p class="text-lg text-red-50 leading-relaxed max-w-4xl mx-auto">
-                            El diseño del Objeto Virtual de Aprendizaje (OVA) gamificado sobre la oración simple constituye una propuesta pedagógica innovadora que integra los principios de la didáctica de la lengua, las tecnologías digitales y las metodologías activas de aprendizaje. A través de la articulación de actividades organizadas según los niveles de la Taxonomía de Bloom, se favorece el desarrollo progresivo de habilidades cognitivas que permiten a los estudiantes no solo reconocer los elementos que conforman la oración simple, sino también comprender su funcionamiento, aplicarlos en diferentes contextos comunicativos, analizarlos críticamente, evaluar su correcta utilización y crear producciones lingüísticas propias.
+                    <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-red text-center">
+                        <span class="material-icons text-brand-red text-4xl mb-4">emoji_events</span>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Conclusión</h2>
+                        <p class="text-gray-600 leading-relaxed max-w-4xl mx-auto">
+                            El diseño del Objeto Virtual de Aprendizaje (OVA) gamificado sobre la oración simple constituye una propuesta pedagógica innovadora que integra los principios de la didáctica de la lengua, las tecnologías digitales y las metodologías activas de aprendizaje. A través de la articulación de actividades organizadas según los niveles de la Taxonomía de Bloom, se favorece el desarrollo progresivo de habilidades cognitivas que permiten a los estudiantes no solo reconocer los elementos que conforman la oración simple, sino también comprender su funcionamiento, aplicarlos en diferentes contextos, analizarlos críticamente, evaluar su correcta utilización y crear producciones lingüísticas propias.
                         </p>
                     </section>
 
                     <!-- Bibliografía (Acordeón sutil) -->
                     <section class="pt-8">
-                        <details class="group bg-gray-50 rounded-lg border border-gray-200 text-gray-500 [&::-webkit-details-marker]:hidden">
-                            <summary class="cursor-pointer p-4 font-medium text-sm flex justify-between items-center hover:bg-gray-100 transition-colors list-none">
-                                <span class="flex items-center gap-2"><span class="material-icons text-sm">library_books</span> Referencias Bibliográficas</span>
-                                <span class="material-icons transition-transform duration-300 group-open:rotate-180">expand_more</span>
+                        <details class="group bg-gray-100 rounded-lg open:bg-white open:shadow-md transition-all duration-300">
+                            <summary class="flex justify-between items-center cursor-pointer p-4 text-gray-500 hover:text-gray-800 font-medium text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-icons text-sm">menu_book</span> Consultar Referencias Bibliográficas
+                                </div>
+                                <span class="material-icons group-open:rotate-180 transition-transform">expand_more</span>
                             </summary>
-                            <div class="p-5 text-xs space-y-3 bg-white border-t border-gray-200 leading-relaxed">
+                            <div class="p-6 pt-2 text-xs text-gray-500 border-t border-gray-100 space-y-3 leading-relaxed">
                                 <p>Anderson, L. W., & Krathwohl, D. R. (2001). A taxonomy for learning, teaching, and assessing: A revision of Bloom's taxonomy of educational objectives. Longman.</p>
-                                <p>Area Moreira, M., & Adell Segura, J. (2009). e-Learning: Enseñar y aprender en espacios virtuales. En J. De Pablos (Coord.), Tecnología educativa: La formación del profesorado en la era de Internet (pp. 391–424). Aljibe.</p>
+                                <p>Area Moreira, M., & Adell Segura, J. (2009). e-Learning: Enseñar y aprender en espacios virtuales. En J. De Pablos (Coord.), Tecnología educativa: La formación del profesorado en la era de Internet (pp. 391-424). Aljibe.</p>
                                 <p>Bloom, B. S. (Ed.). (1956). Taxonomy of educational objectives: The classification of educational goals. Handbook I: Cognitive domain. David McKay Company.</p>
-                                <p>Deterding, S., Dixon, D., Khaled, R., & Nacke, L. (2011). From game design elements to gamefulness: Defining gamification. En Proceedings of the 15th International Academic MindTrek Conference: Envisioning Future Media Environments (pp. 9–15). ACM. https://doi.org/10.1145/2181037.2181040</p>
+                                <p>Deterding, S., Dixon, D., Khaled, R., & Nacke, L. (2011). From game design elements to gamefulness: Defining gamification. En Proceedings of the 15th International Academic MindTrek Conference: Envisioning Future Media Environments (pp. 9-15). ACM.</p>
                                 <p>Ministerio de Educación Nacional. (2012). Recursos educativos digitales abiertos para el aprendizaje. Ministerio de Educación Nacional de Colombia.</p>
                                 <p>Prensky, M. (2001). Digital game-based learning. McGraw-Hill.</p>
-                                <p>Rodríguez, C., & Molero, D. (2009). Conectivismo como gestión del conocimiento. Revista Electrónica de Humanidades, Educación y Comunicación Social, 4(6), 73–85.</p>
+                                <p>Rodríguez, C., & Molero, D. (2009). Conectivismo como gestión del conocimiento. Revista Electrónica de Humanidades, Educación y Comunicación Social, 4(6), 73-85.</p>
                                 <p>Werbach, K., & Hunter, D. (2012). For the win: How game thinking can revolutionize your business. Wharton Digital Press.</p>
                                 <p>Zapata-Ros, M. (2015). Teorías y modelos sobre el aprendizaje en entornos conectados y ubicuos. Universidad de Alcalá.</p>
                             </div>
@@ -1541,7 +757,7 @@
                 </div>
             </transition>
             
-            <!-- CONTENIDO POR DEFECTO SI NO HAY DOCUMENTO ACTIVO -->
+            <!-- CONTENIDO POR DEFECTO -->
             <div v-show="!activeDocument" class="text-center py-20">
                 <span class="material-icons text-6xl text-gray-300">description</span>
                 <h2 class="text-2xl font-bold text-gray-500 mt-4">Selecciona un documento del menú superior</h2>
@@ -1554,20 +770,13 @@
         new Vue({
             el: '#app',
             data: {
-                // ID del documento que se muestra al cargar
-                activeDocument: 'doc1',
+                activeDocument: 'doc1', // ID del documento por defecto
                 
-                // Array de documentos (escalable para el futuro)
                 documents: [
                     { 
                         id: 'doc1', 
                         title: 'La Oración Simple', 
                         icon: 'menu_book' 
-                    },
-                    { 
-                        id: 'doc2', 
-                        title: 'Morfosintaxis', 
-                        icon: 'account_tree' 
                     },
                     { 
                         id: 'doc3', 
